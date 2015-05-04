@@ -118,6 +118,21 @@
 		</dependency>     
 		
 		<!-- QuizMe Dependencies -->
+		
+		<!-- JDBC -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>4.1.6.RELEASE</version>
+		</dependency>
+
+		<!-- MySQL database driver -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.9</version>
+		</dependency>
+		
 		<!-- Apache Tiles -->
 		<dependency>
 	        <groupId>org.apache.tiles</groupId>

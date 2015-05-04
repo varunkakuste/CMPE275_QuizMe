@@ -15,4 +15,8 @@
         <put-attribute name="body" value="/WEB-INF/views/home.jsp" />  
     </definition>
     
+    <definition name="welcome" extends="base.definition"> 
+        <put-attribute name="body" value="/WEB-INF/views/welcome.jsp" />  
+    </definition>
+    
 </tiles-definitions>  
