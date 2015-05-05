@@ -9,6 +9,7 @@ import java.util.List;
 import edu.sjsu.quizme.models.CategoryModel;
 import edu.sjsu.quizme.models.DifficultyLevelModel;
 import edu.sjsu.quizme.models.QuizModel;
+import edu.sjsu.quizme.models.UserModel;
 
 /**
  * @author Varun
@@ -20,4 +21,5 @@ public interface IQuizMeService {
 	public List<DifficultyLevelModel> getDifficultyLevels() throws Exception;
 	public void createQuiz(QuizModel quiz) throws Exception;
 	public ArrayList<String> getQuiz(QuizModel quiz,int  userId) throws Exception;
+	public boolean signUp(UserModel user) throws Exception;
 }

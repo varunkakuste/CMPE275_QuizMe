@@ -23,15 +23,25 @@
 		    	<div class="panel-heading">
 		        	<h3 class="panel-title">Sign Up</h3>
 		        </div>
-		        <c:if test="${resultError ne null && not empty resultError}">
+		        <c:if test="${signingUpError ne null && not empty signingUpError}">
 					<div class="alert alert-danger" role="alert">
 						<div align="center">
 							<strong style="color: red;">
 								<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-								Password Mismatch
+								Password Mismatch or Error during Registration
 							</strong>
 						</div>
 					</div>
+				</c:if>
+
+				<c:if test="${signedUpInfo ne null && not empty signedUpInfo}">
+			        <div class="alert alert-info" role="alert">
+			        	<div align="center">
+				        	<strong style="color: #3366CC;">
+				        		Cheers...Registration Successful...!!!
+				        	</strong>
+				        </div>
+			        </div>
 				</c:if>
 		        <div class="panel-body">
 					<div class="table-responsive" style="overflow-y: auto; height: 400px;">

@@ -18,7 +18,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import edu.sjsu.quizme.models.CategoryModel;
 import edu.sjsu.quizme.models.DifficultyLevelModel;
@@ -146,7 +145,6 @@ public class QuizMeController {
 		try {
 			session = request.getSession();
 			QuizModel quizModel = (QuizModel) session.getAttribute("quizForm");
-			
 			if(quizModel != null && quizModel.getQuestionsList() != null && quizModel.getQuestionsList().size() >= 5) {
 				quizMeService.createQuiz(quizModel);
 			} else {
@@ -161,30 +159,45 @@ public class QuizMeController {
 	
 	@RequestMapping(value = "/getQuiz", method = RequestMethod.GET)
 	public  String getQuiz(HttpServletRequest request,Model model){
-		QuizModel quizModel = new QuizModel();
-		model.addAttribute("quizForm", quizModel);
+		QuizModel quizModel = null;
+		
+		try {
+			session = request.getSession();
+			quizModel = (QuizModel) session.getAttribute("quizForm");
+			if(quizModel == null) {
+				categoryList = quizMeService.getCategories();
+				difficultyList = quizMeService.getDifficultyLevels();
+				
+				quizModel = new QuizModel();
+				quizModel.setCategoryModelList(categoryList);
+				quizModel.setDifficultyLevelModelList(difficultyList);
+				
+				session.setAttribute("quizForm", quizModel);
+			}
+			model.addAttribute("quizForm", quizModel);
+		} catch (Exception exception) {
+			System.out.println("Some Exception...");
+		}
+		
 		return "quiz";
 	}
 	
 	@RequestMapping(value = "/getQuizList", method = RequestMethod.POST)
-	public  String getQuizList(HttpServletRequest request,Model m,@ModelAttribute("quizForm") QuizModel quizModelAttribute) throws Exception{
-		HttpSession session=request.getSession();
+	public  String getQuizList(HttpServletRequest request, Model model, @ModelAttribute("quizForm") QuizModel quizModelAttribute) throws Exception{
+//		HttpSession session=request.getSession();
 		//int userId=(Integer)session.getAttribute("userId");
-		int userId=12;
+		int userId=1;
 		//IQuizMeService quizService=new QuizMeServiceImpl();
 		QuizModel quiz=new QuizModel();
 		quiz.setCategory(quizModelAttribute.getCategory());
 		quiz.setDifficultyLevel(quizModelAttribute.getDifficultyLevel());
-		if(quizModelAttribute.getQuizName()==null || quizModelAttribute.getQuizName().isEmpty()) {
+		if(quizModelAttribute.getQuizName() == null || quizModelAttribute.getQuizName().isEmpty()) {
 			quiz.setQuizName("");
-		}else{
+		} else {
 			quiz.setQuizName(quizModelAttribute.getQuizName());
 		}
-		ArrayList<String>quizList=quizMeService.getQuiz(quiz, userId);
-		
-		m.addAttribute("quizList", quizList);
-		
+		ArrayList<String>quizList = quizMeService.getQuiz(quiz, userId);
+		model.addAttribute("quizList", quizList);
 		return "quizList";
-		
 	}
 }

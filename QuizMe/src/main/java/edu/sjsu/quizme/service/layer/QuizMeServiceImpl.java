@@ -15,6 +15,7 @@ import edu.sjsu.quizme.dao.layer.IQuizMeDao;
 import edu.sjsu.quizme.models.CategoryModel;
 import edu.sjsu.quizme.models.DifficultyLevelModel;
 import edu.sjsu.quizme.models.QuizModel;
+import edu.sjsu.quizme.models.UserModel;
 
 /**
  * @author Varun
@@ -84,5 +85,13 @@ public class QuizMeServiceImpl implements IQuizMeService {
 			return quizMeDao.getQuiz(quiz, userId);
 		}
 		return null;
+	}
+
+	/**
+	 * Method to SignUp
+	 */
+	@Override
+	public boolean signUp(UserModel user) throws Exception {
+		return quizMeDao.signUp(user);
 	}
 }

@@ -20,6 +20,7 @@ import edu.sjsu.quizme.models.CategoryModel;
 import edu.sjsu.quizme.models.DifficultyLevelModel;
 import edu.sjsu.quizme.models.QuestionModel;
 import edu.sjsu.quizme.models.QuizModel;
+import edu.sjsu.quizme.models.UserModel;
 import edu.sjsu.quizme.queries.QuizMeQueries;
 
 /**
@@ -268,5 +269,39 @@ public class QuizMeDaoImpl implements IQuizMeDao {
 			}
 		}
 		return quizList;
+	}
+
+	/**
+	 * Method to SignUp
+	 */
+	@Override
+	public boolean signUp(UserModel user) throws Exception {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		boolean isUserSignedUp = false;
+		try {
+			connection = dataSource.getConnection();
+			preparedStatement = connection.prepareStatement(QuizMeQueries.SIGNUP_USER_QUERY);
+			preparedStatement.setString(1, user.getUserName());
+			preparedStatement.setString(2, user.getEmail());
+			preparedStatement.setString(3, user.getPassword());
+			preparedStatement.setString(4, user.getLastName());
+			preparedStatement.setString(5, user.getFirstName());
+			
+			preparedStatement.executeUpdate();
+			preparedStatement.close();
+			isUserSignedUp = true;
+		} catch (SQLException sql) {
+			throw new Exception(sql);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sql) {
+					throw new Exception(sql);
+				}
+			}
+		}
+		return isUserSignedUp;
 	}
 }
