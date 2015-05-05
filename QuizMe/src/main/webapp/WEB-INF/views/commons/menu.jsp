@@ -17,7 +17,10 @@
 	}
 	
 	function searchQuiz() {
-		alert("search quiz");
+		var quizForm = document.forms['quizForm'];
+		quizForm.method = "get";
+		quizForm.action = "getQuiz";
+		quizForm.submit();
 	}
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">

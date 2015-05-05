@@ -9,6 +9,14 @@
         <put-attribute name="menu" value="/WEB-INF/views/commons/menu.jsp" />  
         <put-attribute name="body" value="" />  
         <put-attribute name="footer" value="/WEB-INF/views/commons/footer.jsp" />  
+    </definition> 
+
+	<definition name="base1.definition" template="/WEB-INF/views/layout/main-template.jsp">  
+        <put-attribute name="globallinks" value="" />
+        <put-attribute name="header" value="/WEB-INF/views/commons/header.jsp" />
+        <put-attribute name="menu" value="" />  
+        <put-attribute name="body" value="" />  
+        <put-attribute name="footer" value="/WEB-INF/views/commons/footer.jsp" />  
     </definition>  
     
     <definition name="home" extends="base.definition"> 
@@ -25,6 +33,20 @@
     
     <definition name="addQuestions" extends="base.definition"> 
         <put-attribute name="body" value="/WEB-INF/views/addQuestions.jsp" />  
+    </definition>
+    
+    <definition name="quiz" extends="base.definition"> 
+        <put-attribute name="body" value="/WEB-INF/views/quiz.jsp" />  
+    </definition>
+    
+    <definition name="quizList" extends="base1.definition"> 
+        <put-attribute name="header" value="" />
+         <put-attribute name="body" value="/WEB-INF/views/quizList.jsp" /> 
+        <put-attribute name="footer" value="" />  
+    </definition>
+    
+    <definition name="signUp" extends="base1.definition"> 
+       <put-attribute name="body" value="/WEB-INF/views/signUp.jsp" />  
     </definition>
     
 </tiles-definitions>  

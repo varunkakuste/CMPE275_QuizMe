@@ -3,6 +3,7 @@
  */
 package edu.sjsu.quizme.service.layer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -73,4 +74,5 @@ public class QuizMeServiceImpl implements IQuizMeService {
 		quizMeDao.createQuiz(quiz);
 		quizMeDao.createQuestions(quiz.getQuestionsList());
 	}
+
 }
