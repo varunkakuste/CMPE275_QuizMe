@@ -10,7 +10,10 @@
 	}
 	
 	function createQuiz() {
-		alert("create quiz");
+		var quizForm = document.forms['quizForm'];
+		quizForm.method = "get";
+		quizForm.action = "createQuiz";
+		quizForm.submit();
 	}
 	
 	function searchQuiz() {
@@ -21,7 +24,7 @@
 <title>Menu</title>
 </head>
 <body>
-	<form:form modelAttribute="filesForm">
+	<form:form modelAttribute="quizForm">
 		<nav class="navbar navbar-inverse">
 			<div class="container">
 				<div class="navbar-collapse collapse">

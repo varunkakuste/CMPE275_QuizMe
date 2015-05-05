@@ -19,4 +19,12 @@
         <put-attribute name="body" value="/WEB-INF/views/welcome.jsp" />  
     </definition>
     
+    <definition name="createQuiz" extends="base.definition"> 
+        <put-attribute name="body" value="/WEB-INF/views/createQuiz.jsp" />  
+    </definition>
+    
+    <definition name="addQuestions" extends="base.definition"> 
+        <put-attribute name="body" value="/WEB-INF/views/addQuestions.jsp" />  
+    </definition>
+    
 </tiles-definitions>  
