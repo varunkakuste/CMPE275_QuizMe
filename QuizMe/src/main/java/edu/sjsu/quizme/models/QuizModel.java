@@ -27,6 +27,16 @@ public class QuizModel {
 	private int difficultyLevel;
 	
 	/**
+	 * categoryModel
+	 */
+	private List<CategoryModel> categoryModelList;
+	
+	/**
+	 * difficultyLevelModel
+	 */
+	private List<DifficultyLevelModel> difficultyLevelModelList;
+	
+	/**
 	 * questionsList
 	 */
 	private List<QuestionModel> questionsList;
@@ -74,6 +84,35 @@ public class QuizModel {
 	}
 
 	/**
+	 * @return the categoryModelList
+	 */
+	public List<CategoryModel> getCategoryModelList() {
+		return categoryModelList;
+	}
+
+	/**
+	 * @param categoryModelList the categoryModelList to set
+	 */
+	public void setCategoryModelList(List<CategoryModel> categoryModelList) {
+		this.categoryModelList = categoryModelList;
+	}
+
+	/**
+	 * @return the difficultyLevelModelList
+	 */
+	public List<DifficultyLevelModel> getDifficultyLevelModelList() {
+		return difficultyLevelModelList;
+	}
+
+	/**
+	 * @param difficultyLevelModelList the difficultyLevelModelList to set
+	 */
+	public void setDifficultyLevelModelList(
+			List<DifficultyLevelModel> difficultyLevelModelList) {
+		this.difficultyLevelModelList = difficultyLevelModelList;
+	}
+
+	/**
 	 * @return the questionsList
 	 */
 	public List<QuestionModel> getQuestionsList() {
@@ -86,5 +125,5 @@ public class QuizModel {
 	public void setQuestionsList(List<QuestionModel> questionsList) {
 		this.questionsList = questionsList;
 	}
-	
+
 }

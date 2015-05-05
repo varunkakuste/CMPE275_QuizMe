@@ -43,8 +43,8 @@
 	<beans:bean id="dataSource" scope="prototype" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<beans:property name="url" value="jdbc:mysql://localhost:3306/QUIZME_275" />
-		<beans:property name="username" value="TEAM15_275" />
-		<beans:property name="password" value="TEAM15_275" />
+		<beans:property name="username" value="team15_275" />
+		<beans:property name="password" value="team15_275" />
 	</beans:bean>
 	
 	<beans:bean id="quizMeService" scope="prototype" class="edu.sjsu.quizme.service.layer.QuizMeServiceImpl" />

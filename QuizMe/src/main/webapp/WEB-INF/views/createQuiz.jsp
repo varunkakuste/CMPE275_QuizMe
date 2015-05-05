@@ -15,6 +15,12 @@
 				quizForm.submit();
 			}		
 			
+			function createQuiz() {
+				var quizForm = document.forms['quizFormId'];
+				quizForm.method = "post";
+				quizForm.action = "createQuiz";
+				quizForm.submit();
+			}	
 		</script>
 	</head>
 	<body>
@@ -40,8 +46,7 @@
 									<td>Category: </td>
 									<td>
 										<form:select path="category">
-											<form:option value="1">General</form:option>
-											<form:option value="2">Sports</form:option>
+											<form:options items="${ quizForm.categoryModelList }" itemValue="categoryId" itemLabel="category"></form:options>
 										</form:select>
 									</td>
 								</tr>
@@ -49,9 +54,9 @@
 									<td>Difficulty Level: </td>
 									<td>
 										<form:select path="difficultyLevel">
-											<form:option value="1">Easy</form:option>
-											<form:option value="2">Medium</form:option>
-											<form:option value="3">Hard</form:option>
+											<c:forEach var="data" items="${quizForm.difficultyLevelModelList}" varStatus="loop">    
+												<form:option value="${data.difficultyLevelId}" label="${data.difficultyLevel}" />
+											</c:forEach>
 										</form:select>
 									</td>
 								</tr>
@@ -96,6 +101,7 @@
 							</tbody>
 						</table>
 						<button type="button" class="btn btn-sm btn-primary" onclick="javascript: proceedToQuestion();">Add Question</button>
+						<button type="button" class="btn btn-sm btn-warning" onclick="javascript: createQuiz();">Create Quiz</button>
 					</div>
 				</div>
 	    	</div>

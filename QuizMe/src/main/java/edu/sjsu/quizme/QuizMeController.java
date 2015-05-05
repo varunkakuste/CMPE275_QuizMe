@@ -18,7 +18,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
+import edu.sjsu.quizme.models.CategoryModel;
+import edu.sjsu.quizme.models.DifficultyLevelModel;
 import edu.sjsu.quizme.models.QuestionModel;
 import edu.sjsu.quizme.models.QuizModel;
 import edu.sjsu.quizme.service.layer.IQuizMeService;
@@ -37,16 +40,19 @@ public class QuizMeController {
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(QuizMeController.class);
 	
+	@Autowired
 	private IQuizMeService quizMeService;
 	private HttpSession session = null;
+	private List<CategoryModel> categoryList = null;
+	private List<DifficultyLevelModel> difficultyList = null;
 	
-	/**
-	 * @param quizMeService
-	 */
-	@Autowired
-	public QuizMeController(IQuizMeService quizMeService) {
-		this.quizMeService = quizMeService;
-	}
+//	/**
+//	 * @param quizMeService
+//	 */
+//	@Autowired
+//	public QuizMeController(IQuizMeService quizMeService) {
+//		this.quizMeService = quizMeService;
+//	}
 
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -62,18 +68,27 @@ public class QuizMeController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "/createQuiz", method = RequestMethod.GET)
+	@RequestMapping(value = "/createNewQuiz", method = RequestMethod.GET)
 	public String createQuiz(Model model, HttpServletRequest request) {
 		logger.info("Class: QuizMeController <-> Method: createQuiz() Start");
-		session = request.getSession();
-		QuizModel quizModel = (QuizModel) session.getAttribute("quizForm");
-		if(quizModel == null) {
-			quizModel = new QuizModel();
-			session.setAttribute("quizForm", quizModel);
+		QuizModel quizModel = null;
+		try {
+			session = request.getSession();
+			quizModel = (QuizModel) session.getAttribute("quizForm");
+			if(quizModel == null) {
+				categoryList = quizMeService.getCategories();
+				difficultyList = quizMeService.getDifficultyLevels();
+				
+				quizModel = new QuizModel();
+				quizModel.setCategoryModelList(categoryList);
+				quizModel.setDifficultyLevelModelList(difficultyList);
+				
+				session.setAttribute("quizForm", quizModel);
+			}
+			model.addAttribute("quizForm", quizModel);
+		} catch (Exception exception) {
+			System.out.println("Some Exception...");
 		}
-		
-		model.addAttribute("quizForm", quizModel);
-		
 		logger.info("Class: QuizMeController <-> Method: createQuiz() End");
 		return "createQuiz";
 	}
@@ -88,6 +103,8 @@ public class QuizMeController {
 		QuizModel quizModel = (QuizModel) session.getAttribute("quizForm");
 		if(quizModel != null && quizModel.getCategory() == 0 && quizModel.getDifficultyLevel() == 0 
 				&& (quizModel.getQuestionsList() == null || quizModel.getQuestionsList().isEmpty())) {
+			quizModelAttribute.setCategoryModelList(categoryList);
+			quizModelAttribute.setDifficultyLevelModelList(difficultyList);
 			session.setAttribute("quizForm", quizModelAttribute);
 		}
 		model.addAttribute("questionForm", questionModel);
@@ -117,6 +134,28 @@ public class QuizMeController {
 		session.setAttribute("quizForm", quizModel);
 		model.addAttribute("quizForm", quizModel);
 		logger.info("Class: QuizMeController <-> Method: addQuestion() End");
-		return "redirect:/createQuiz";
+		return "redirect:/createNewQuiz";
+	}
+	
+	/**
+	 * Simply selects the home view to render by returning its name.
+	 */
+	@RequestMapping(value = "/createQuiz", method = RequestMethod.POST)
+	public String createNewQuiz(Model model, HttpServletRequest request) {
+		logger.info("Class: QuizMeController <-> Method: addQuestion() Start");
+		try {
+			session = request.getSession();
+			QuizModel quizModel = (QuizModel) session.getAttribute("quizForm");
+			
+			if(quizModel != null && quizModel.getQuestionsList() != null && quizModel.getQuestionsList().size() >= 5) {
+				quizMeService.createQuiz(quizModel);
+			} else {
+				System.out.println("ERROR: Please add atleast 5 questions to the quiz");
+			}
+		} catch (Exception exception) {
+			System.out.println("Some Exception...");
+		}
+		logger.info("Class: QuizMeController <-> Method: addQuestion() End");
+		return "redirect:/createNewQuiz";
 	}
 }

@@ -12,7 +12,7 @@
 	function createQuiz() {
 		var quizForm = document.forms['quizForm'];
 		quizForm.method = "get";
-		quizForm.action = "createQuiz";
+		quizForm.action = "createNewQuiz";
 		quizForm.submit();
 	}
 	

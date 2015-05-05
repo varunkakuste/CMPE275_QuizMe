@@ -3,11 +3,24 @@
  */
 package edu.sjsu.quizme.dao.layer;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import edu.sjsu.quizme.models.CategoryModel;
+import edu.sjsu.quizme.models.DifficultyLevelModel;
+import edu.sjsu.quizme.models.QuestionModel;
+import edu.sjsu.quizme.models.QuizModel;
+import edu.sjsu.quizme.queries.QuizMeQueries;
 
 /**
  * @author Varun
@@ -48,5 +61,175 @@ public class QuizMeDaoImpl implements IQuizMeDao {
 		logger.info("Class: QuizMeDaoImpl <-> Method: getHome() End");
 		return result;
 	}
-	
+
+	/**
+	 * Method to get all the categories from Database
+	 * @throws Exception 
+	 */
+	@Override
+	public List<CategoryModel> getCategories() throws Exception {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		CategoryModel categoryModel = null;
+		List<CategoryModel> categoryList = new ArrayList<CategoryModel>();
+		try {
+			connection = dataSource.getConnection();
+			preparedStatement = connection.prepareStatement(QuizMeQueries.GET_CATEGORY_QUERY);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				categoryModel = new CategoryModel();
+				categoryModel.setCategoryId(resultSet.getInt("CATEGORY_ID"));
+				categoryModel.setCategory(resultSet.getString("CATEGORY"));
+				categoryList.add(categoryModel);
+			}
+		} catch (SQLException sql) {
+			throw new Exception(sql);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sql) {
+					throw new Exception(sql);
+				}
+			}
+		}
+		return categoryList;
+	}
+
+	/**
+	 * Method to get all the difficulty levels from Database
+	 */
+	@Override
+	public List<DifficultyLevelModel> getDifficultyLevels() throws Exception {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		DifficultyLevelModel difficultyLevelModel = null;
+		List<DifficultyLevelModel> difficultyLevelList = new ArrayList<DifficultyLevelModel>();
+		try {
+			connection = dataSource.getConnection();
+			preparedStatement = connection.prepareStatement(QuizMeQueries.GET_DIFFICULTY_LEVEL_QUERY);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				difficultyLevelModel = new DifficultyLevelModel();
+				difficultyLevelModel.setDifficultyLevelId(resultSet.getInt("DIFFICULTY_ID"));
+				difficultyLevelModel.setDifficultyLevel(resultSet.getString("DIFFICULTY"));
+				difficultyLevelList.add(difficultyLevelModel);
+			}
+		} catch (SQLException sql) {
+			throw new Exception(sql);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sql) {
+					throw new Exception(sql);
+				}
+			}
+		}
+		return difficultyLevelList;
+	}
+
+	/**
+	 * Method to get max quiz id from Database
+	 * @throws Exception 
+	 */
+	@Override
+	public int getMaxQuizId() throws Exception {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		int maxId = 0;
+		try {
+			connection = dataSource.getConnection();
+			preparedStatement = connection.prepareStatement(QuizMeQueries.GET_MAX_QUIZ_ID_QUERY);
+			resultSet = preparedStatement.executeQuery();
+			if(resultSet.next()) {
+				maxId = resultSet.getInt("MAX_QUIZ_ID");
+			}
+			preparedStatement.close();
+		} catch (SQLException sql) {
+			throw new Exception(sql);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sql) {
+					throw new Exception(sql);
+				}
+			}
+		}
+		return maxId;
+	}
+
+	/**
+	 * Method to create a new quiz into database
+	 * @throws Exception 
+	 */
+	@Override
+	public void createQuiz(QuizModel quiz) throws Exception {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		try {
+			if(quiz != null) {
+				connection = dataSource.getConnection();
+				preparedStatement = connection.prepareStatement(QuizMeQueries.CREATE_QUIZ_QUERY);
+				preparedStatement.setString(1, quiz.getQuizName());
+				preparedStatement.setInt(2, quiz.getCategory());
+				preparedStatement.setInt(3, quiz.getDifficultyLevel());
+				
+				preparedStatement.executeUpdate();
+				preparedStatement.close();
+			}
+		} catch (SQLException sql) {
+			throw new Exception(sql);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sql) {
+					throw new Exception(sql);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Method to insert questions for the quiz in Database
+	 * @throws Exception 
+	 */
+	@Override
+	public void createQuestions(List<QuestionModel> questionsList) throws Exception {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		try {
+			connection = dataSource.getConnection();
+			preparedStatement = connection.prepareStatement(QuizMeQueries.CREATE_QUESTIONS_FOR_QUIZ_QUERY);
+			int maxQuizId = getMaxQuizId();
+			for(QuestionModel question : questionsList) {
+				preparedStatement.setInt(1, maxQuizId);
+				preparedStatement.setString(2, question.getQuestion());
+				preparedStatement.setString(3, question.getOptionA());
+				preparedStatement.setString(4, question.getOptionB());
+				preparedStatement.setString(5, question.getOptionC());
+				preparedStatement.setString(6, question.getOptionD());
+				preparedStatement.setString(7, question.getCorrectAnswer());
+				preparedStatement.addBatch();
+			}
+			
+			preparedStatement.executeBatch();
+			preparedStatement.close();
+		} catch (SQLException sql) {
+			throw new Exception(sql);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sql) {
+					throw new Exception(sql);
+				}
+			}
+		}
+	}
 }
