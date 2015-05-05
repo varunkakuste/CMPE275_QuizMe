@@ -166,7 +166,7 @@ public class QuizMeController {
 		return "quiz";
 	}
 	
-	/*@RequestMapping(value = "/getQuizList", method = RequestMethod.POST)
+	@RequestMapping(value = "/getQuizList", method = RequestMethod.POST)
 	public  String getQuizList(HttpServletRequest request,Model m,@ModelAttribute("quizForm") QuizModel quizModelAttribute) throws Exception{
 		HttpSession session=request.getSession();
 		//int userId=(Integer)session.getAttribute("userId");
@@ -186,5 +186,5 @@ public class QuizMeController {
 		
 		return "quizList";
 		
-	}*/
+	}
 }

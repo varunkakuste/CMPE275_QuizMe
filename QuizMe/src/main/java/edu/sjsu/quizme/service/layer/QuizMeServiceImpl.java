@@ -74,5 +74,15 @@ public class QuizMeServiceImpl implements IQuizMeService {
 		quizMeDao.createQuiz(quiz);
 		quizMeDao.createQuestions(quiz.getQuestionsList());
 	}
-
+	
+	/**
+	 * Method to search Quiz in Database
+	 */
+	@Override
+	public ArrayList<String> getQuiz(QuizModel quiz, int userId) throws Exception {
+		if(quiz != null){
+			return quizMeDao.getQuiz(quiz, userId);
+		}
+		return null;
+	}
 }

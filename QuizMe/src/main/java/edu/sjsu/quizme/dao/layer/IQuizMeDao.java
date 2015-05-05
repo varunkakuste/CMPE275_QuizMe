@@ -22,4 +22,5 @@ public interface IQuizMeDao {
 	public int getMaxQuizId() throws Exception;
 	public void createQuiz(QuizModel quiz) throws Exception;
 	public void createQuestions(List<QuestionModel> questionsList) throws Exception;
+	public ArrayList<String> getQuiz(QuizModel quiz, int userId) throws Exception;
 }
