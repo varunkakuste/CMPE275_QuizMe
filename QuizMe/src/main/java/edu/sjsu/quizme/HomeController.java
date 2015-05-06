@@ -16,7 +16,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import edu.sjsu.quizme.models.LoginModel;
 import edu.sjsu.quizme.models.UserModel;
 import edu.sjsu.quizme.service.layer.IQuizMeService;
 
@@ -51,6 +53,16 @@ public class HomeController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login(Model model,@ModelAttribute("information") String infoMessage) {
+		model.addAttribute("loginForm", new LoginModel());
+		model.addAttribute("information", infoMessage);
+		return "login";
+	}
+	
+	/**
+	 * Simply selects the home view to render by returning its name.
+	 */
 	@RequestMapping(value = "/usersignup", method = RequestMethod.GET)
 	public String userSignUp(Model model) {
 		model.addAttribute("signUpForm", new UserModel());
@@ -61,8 +73,9 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public String signUp(@ModelAttribute("signUpForm") @Valid UserModel userModel, BindingResult bindingResult, Model model) { 
+	public String signUp(@ModelAttribute("signUpForm") @Valid UserModel userModel, BindingResult bindingResult, Model model, final RedirectAttributes redirectAttributes) { 
 		boolean isSignedUp = false;
+		String redirection = "signUp";
 		try {
 			if (!bindingResult.hasErrors()) {
 				if(!userModel.getPassword().equals(userModel.getConfirmPassword())) {
@@ -70,16 +83,19 @@ public class HomeController {
 				} else {
 					isSignedUp = quizMeService.signUp(userModel);
 					if(isSignedUp) {
-						model.addAttribute("signedUpInfo", "User signedup successfully");
+						redirectAttributes.addFlashAttribute("information", "User signedup successfully");
+						redirection = "redirect:/login";
 					} else {
 						model.addAttribute("signingUpError", "Error Signing up");
 					}
 				}
+			} else {
+				model.addAttribute("signingUpError", "Error Signing up");
 			}
 		} catch (Exception exception) {
-			System.out.println("Some Exception...");
+			model.addAttribute("signingUpError", "Error Signing up");
 		}
-		return "signUp";
+		return redirection;
 	}
 	
 }

@@ -14,7 +14,14 @@
 				signUpForm.method = "POST";
 				signUpForm.action = "signup";
 				signUpForm.submit();
-			}		
+			}	
+			
+			function cancel() {
+				var signUpForm = document.forms['signUpFormId'];
+				signUpForm.method = "get";
+				signUpForm.action = "login";
+				signUpForm.submit();
+			}	
 		</script>
 	</head>
 	<body>
@@ -79,7 +86,7 @@
 							</tbody>
 						</table>
 						<button type="button" class="btn btn-sm btn-primary" onclick="javascript: signUp();">Register</button>
-						<button type="button" class="btn btn-sm btn-warning">Cancel</button>
+						<button type="button" class="btn btn-sm btn-warning" onclick="javascript: cancel();">Cancel</button>
 					</div>
 				</div>
 	    	</div>

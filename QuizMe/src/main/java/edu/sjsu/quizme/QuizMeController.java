@@ -160,7 +160,6 @@ public class QuizMeController {
 	@RequestMapping(value = "/getQuiz", method = RequestMethod.GET)
 	public  String getQuiz(HttpServletRequest request,Model model){
 		QuizModel quizModel = null;
-		
 		try {
 			session = request.getSession();
 			quizModel = (QuizModel) session.getAttribute("quizForm");
@@ -178,26 +177,29 @@ public class QuizMeController {
 		} catch (Exception exception) {
 			System.out.println("Some Exception...");
 		}
-		
 		return "quiz";
 	}
 	
 	@RequestMapping(value = "/getQuizList", method = RequestMethod.POST)
-	public  String getQuizList(HttpServletRequest request, Model model, @ModelAttribute("quizForm") QuizModel quizModelAttribute) throws Exception{
-//		HttpSession session=request.getSession();
-		//int userId=(Integer)session.getAttribute("userId");
-		int userId=1;
-		//IQuizMeService quizService=new QuizMeServiceImpl();
-		QuizModel quiz=new QuizModel();
-		quiz.setCategory(quizModelAttribute.getCategory());
-		quiz.setDifficultyLevel(quizModelAttribute.getDifficultyLevel());
-		if(quizModelAttribute.getQuizName() == null || quizModelAttribute.getQuizName().isEmpty()) {
-			quiz.setQuizName("");
-		} else {
-			quiz.setQuizName(quizModelAttribute.getQuizName());
+	public  String getQuizList(HttpServletRequest request, Model model, @ModelAttribute("quizForm") QuizModel quizModelAttribute) {
+		try {
+//			HttpSession session=request.getSession();
+			//int userId=(Integer)session.getAttribute("userId");
+			int userId=1;
+			//IQuizMeService quizService=new QuizMeServiceImpl();
+			QuizModel quiz=new QuizModel();
+			quiz.setCategory(quizModelAttribute.getCategory());
+			quiz.setDifficultyLevel(quizModelAttribute.getDifficultyLevel());
+			if(quizModelAttribute.getQuizName() == null || quizModelAttribute.getQuizName().isEmpty()) {
+				quiz.setQuizName("");
+			} else {
+				quiz.setQuizName(quizModelAttribute.getQuizName());
+			}
+			ArrayList<String>quizList = quizMeService.getQuiz(quiz, userId);
+			model.addAttribute("quizList", quizList);
+		} catch (Exception exception) {
+			System.out.println("Some Exception...");
 		}
-		ArrayList<String>quizList = quizMeService.getQuiz(quiz, userId);
-		model.addAttribute("quizList", quizList);
 		return "quizList";
 	}
 }

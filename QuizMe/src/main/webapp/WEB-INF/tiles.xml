@@ -45,6 +45,10 @@
         <put-attribute name="footer" value="" />  
     </definition>
     
+    <definition name="login" extends="base1.definition"> 
+       <put-attribute name="body" value="/WEB-INF/views/login.jsp" />  
+    </definition>
+    
     <definition name="signUp" extends="base1.definition"> 
        <put-attribute name="body" value="/WEB-INF/views/signUp.jsp" />  
     </definition>
