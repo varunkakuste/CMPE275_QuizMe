@@ -40,7 +40,7 @@
 							<tbody>
 								<tr>
 									<td>Enter Quiz Name: </td>
-									<td><form:input path="quizName" /></td>
+									<td><form:input path="quizName" placeholder="enter quiz name" /></td>
 								</tr>
 								<tr>
 									<td>Category: </td>

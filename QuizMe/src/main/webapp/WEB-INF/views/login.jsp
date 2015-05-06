@@ -12,7 +12,7 @@
 			function login() {
 				var signUpForm = document.forms['loginFormId'];
 				signUpForm.method = "get";
-				signUpForm.action = "loginUser";
+				signUpForm.action = "loginuser";
 				signUpForm.submit();
 			}	
 		
@@ -30,11 +30,20 @@
 		    	<div class="panel-heading">
 		        	<h3 class="panel-title">Login</h3>
 		        </div>
+		        <c:if test="${loginError ne null && not empty loginError}">
+			        <div class="alert alert-danger" role="alert">
+			        	<div align="center">
+				        	<strong style="color: red;">
+				        		Access Denied...User not Registered...
+				        	</strong>
+				        </div>
+			        </div>
+				</c:if>
 				<c:if test="${information ne null && not empty information}">
 			        <div class="alert alert-info" role="alert">
 			        	<div align="center">
 				        	<strong style="color: #3366CC;">
-				        		Cheers...Registration Successful...!!!
+				        		Cheers...Registration/Update Successful...!!!
 				        	</strong>
 				        </div>
 			        </div>
@@ -42,19 +51,14 @@
 		        <div class="panel-body">
 					<div class="table-responsive" style="overflow-y: auto; height: 400px;">
 						<table class="table table-striped table-bordered table-hover" id="dataTables-example">
-<!-- 							<thead> -->
-<!-- 			                   <tr style="background-color: #404040; color: #F8F8F8;"> -->
-<!-- 			                       <th colspan="2">Login</th> -->
-<!-- 			                   </tr> -->
-<!-- 							</thead> -->
 							<tbody>
 								<tr>
 									<td>User Name: </td>
-									<td><form:input path="userName" /> <label style="color: red;"><form:errors path="userName" element="div" /></label></td>
+									<td><form:input path="userName" placeholder="enter user name" /> <label style="color: red;"><form:errors path="userName" element="div" /></label></td>
 								</tr>
 								<tr>
 									<td>Password: </td>
-									<td><form:input path="password" /> <label style="color: red;"><form:errors path="password" element="div" /></label></td>
+									<td><form:input path="password" type="password" placeholder="enter password" /> <label style="color: red;"><form:errors path="password" element="div" /></label></td>
 								</tr>
 							</tbody>
 						</table>

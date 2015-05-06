@@ -14,6 +14,8 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  */
 public class UserModel {
+	
+	private int userId;
 	@NotEmpty @NotNull @Size(min=2, max=30)
 	private String userName;
 	@NotEmpty @NotNull @Email
@@ -25,6 +27,18 @@ public class UserModel {
 	private String lastName;
 	private String firstName;
 	
+	/**
+	 * @return the userId
+	 */
+	public int getUserId() {
+		return userId;
+	}
+	/**
+	 * @param userId the userId to set
+	 */
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 	/**
 	 * @return the userName
 	 */

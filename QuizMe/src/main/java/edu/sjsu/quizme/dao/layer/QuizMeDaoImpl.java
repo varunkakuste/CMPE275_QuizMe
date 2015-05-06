@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import edu.sjsu.quizme.models.CategoryModel;
 import edu.sjsu.quizme.models.DifficultyLevelModel;
+import edu.sjsu.quizme.models.LoginModel;
 import edu.sjsu.quizme.models.QuestionModel;
 import edu.sjsu.quizme.models.QuizModel;
 import edu.sjsu.quizme.models.UserModel;
@@ -86,6 +87,8 @@ public class QuizMeDaoImpl implements IQuizMeDao {
 			}
 		} catch (SQLException sql) {
 			throw new Exception(sql);
+		} catch (Exception exp){
+			throw new Exception(exp);
 		} finally {
 			if (connection != null) {
 				try {
@@ -120,6 +123,8 @@ public class QuizMeDaoImpl implements IQuizMeDao {
 			}
 		} catch (SQLException sql) {
 			throw new Exception(sql);
+		} catch (Exception exp){
+			throw new Exception(exp);
 		} finally {
 			if (connection != null) {
 				try {
@@ -152,6 +157,8 @@ public class QuizMeDaoImpl implements IQuizMeDao {
 			preparedStatement.close();
 		} catch (SQLException sql) {
 			throw new Exception(sql);
+		} catch (Exception exp){
+			throw new Exception(exp);
 		} finally {
 			if (connection != null) {
 				try {
@@ -185,6 +192,8 @@ public class QuizMeDaoImpl implements IQuizMeDao {
 			}
 		} catch (SQLException sql) {
 			throw new Exception(sql);
+		} catch (Exception exp){
+			throw new Exception(exp);
 		} finally {
 			if (connection != null) {
 				try {
@@ -223,6 +232,8 @@ public class QuizMeDaoImpl implements IQuizMeDao {
 			preparedStatement.close();
 		} catch (SQLException sql) {
 			throw new Exception(sql);
+		} catch (Exception exp){
+			throw new Exception(exp);
 		} finally {
 			if (connection != null) {
 				try {
@@ -293,6 +304,8 @@ public class QuizMeDaoImpl implements IQuizMeDao {
 			isUserSignedUp = true;
 		} catch (SQLException sql) {
 			throw new Exception(sql);
+		} catch (Exception exp){
+			throw new Exception(exp);
 		} finally {
 			if (connection != null) {
 				try {
@@ -303,5 +316,82 @@ public class QuizMeDaoImpl implements IQuizMeDao {
 			}
 		}
 		return isUserSignedUp;
+	}
+	
+	/**
+	 * Method to get user details
+	 */
+	@Override
+	public UserModel getUserDetails(LoginModel login) throws Exception {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		UserModel user = null;		
+		try {
+			connection = (Connection) dataSource.getConnection();
+			preparedStatement = (PreparedStatement) connection.prepareStatement(QuizMeQueries.GET_USER_DETAILS);
+			preparedStatement.setString(1, login.getUserName());
+			preparedStatement.setString(2, login.getPassword());
+			resultSet = preparedStatement.executeQuery();
+			if(resultSet.next()) {
+				user = new UserModel();
+				user.setUserId(resultSet.getInt("USER_ID"));
+				user.setUserName(resultSet.getString("USERNAME"));
+				user.setEmail(resultSet.getString("EMAIL"));
+				user.setPassword(resultSet.getString("PASSWORD"));
+				user.setLastName(resultSet.getString("LASTNAME"));
+				user.setFirstName(resultSet.getString("FIRSTNAME"));
+			}
+		} catch (SQLException sql) {
+			throw new Exception(sql);
+		} catch (Exception exp){
+			throw new Exception(exp);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sql) {
+					throw new Exception(sql);
+				}
+			}
+		}
+		return user;
+	}
+	
+	/**
+	 * Method to update user details
+	 */
+	@Override
+	public boolean updateUserDetails(UserModel user) throws Exception {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		boolean isUserUpdated = false;
+		try {
+			connection = dataSource.getConnection();
+			preparedStatement = connection.prepareStatement(QuizMeQueries.UPDATE_USER_DETAILS);
+			preparedStatement.setString(1, user.getUserName());
+			preparedStatement.setString(2, user.getEmail());
+			preparedStatement.setString(3, user.getPassword());
+			preparedStatement.setString(4, user.getLastName());
+			preparedStatement.setString(5, user.getFirstName());
+			preparedStatement.setInt(6, user.getUserId());
+			
+			preparedStatement.executeUpdate();
+			preparedStatement.close();
+			isUserUpdated = true;
+		} catch (SQLException sql) {
+			throw new Exception(sql);
+		} catch (Exception exp){
+			throw new Exception(exp);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sql) {
+					throw new Exception(sql);
+				}
+			}
+		}
+		return isUserUpdated;
 	}
 }

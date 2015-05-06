@@ -23,6 +23,7 @@ import edu.sjsu.quizme.models.CategoryModel;
 import edu.sjsu.quizme.models.DifficultyLevelModel;
 import edu.sjsu.quizme.models.QuestionModel;
 import edu.sjsu.quizme.models.QuizModel;
+import edu.sjsu.quizme.models.UserModel;
 import edu.sjsu.quizme.service.layer.IQuizMeService;
 
 /**
@@ -75,8 +76,8 @@ public class QuizMeController {
 			session = request.getSession();
 			quizModel = (QuizModel) session.getAttribute("quizForm");
 			if(quizModel == null) {
-				categoryList = quizMeService.getCategories();
-				difficultyList = quizMeService.getDifficultyLevels();
+				categoryList = (List<CategoryModel>) session.getAttribute("categoryList");
+				difficultyList = (List<DifficultyLevelModel>) session.getAttribute("difficultyList");
 				
 				quizModel = new QuizModel();
 				quizModel.setCategoryModelList(categoryList);
@@ -164,8 +165,10 @@ public class QuizMeController {
 			session = request.getSession();
 			quizModel = (QuizModel) session.getAttribute("quizForm");
 			if(quizModel == null) {
-				categoryList = quizMeService.getCategories();
-				difficultyList = quizMeService.getDifficultyLevels();
+//				categoryList = quizMeService.getCategories();
+//				difficultyList = quizMeService.getDifficultyLevels();
+				categoryList = (List<CategoryModel>) session.getAttribute("categoryList");
+				difficultyList = (List<DifficultyLevelModel>) session.getAttribute("difficultyList");
 				
 				quizModel = new QuizModel();
 				quizModel.setCategoryModelList(categoryList);
@@ -182,12 +185,16 @@ public class QuizMeController {
 	
 	@RequestMapping(value = "/getQuizList", method = RequestMethod.POST)
 	public  String getQuizList(HttpServletRequest request, Model model, @ModelAttribute("quizForm") QuizModel quizModelAttribute) {
+		int userId = 0;
+		QuizModel quiz = null; 
+		ArrayList<String> quizList = null;
 		try {
-//			HttpSession session=request.getSession();
-			//int userId=(Integer)session.getAttribute("userId");
-			int userId=1;
-			//IQuizMeService quizService=new QuizMeServiceImpl();
-			QuizModel quiz=new QuizModel();
+			session = request.getSession();
+			UserModel user = (UserModel) session.getAttribute("userDetails");
+			if(user != null) {
+				userId = user.getUserId();
+			}
+			quiz = new QuizModel();
 			quiz.setCategory(quizModelAttribute.getCategory());
 			quiz.setDifficultyLevel(quizModelAttribute.getDifficultyLevel());
 			if(quizModelAttribute.getQuizName() == null || quizModelAttribute.getQuizName().isEmpty()) {
@@ -195,7 +202,7 @@ public class QuizMeController {
 			} else {
 				quiz.setQuizName(quizModelAttribute.getQuizName());
 			}
-			ArrayList<String>quizList = quizMeService.getQuiz(quiz, userId);
+			quizList = quizMeService.getQuiz(quiz, userId);
 			model.addAttribute("quizList", quizList);
 		} catch (Exception exception) {
 			System.out.println("Some Exception...");

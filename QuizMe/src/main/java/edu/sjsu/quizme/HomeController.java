@@ -2,8 +2,10 @@ package edu.sjsu.quizme;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import edu.sjsu.quizme.models.CategoryModel;
+import edu.sjsu.quizme.models.DifficultyLevelModel;
 import edu.sjsu.quizme.models.LoginModel;
 import edu.sjsu.quizme.models.UserModel;
 import edu.sjsu.quizme.service.layer.IQuizMeService;
@@ -63,6 +67,39 @@ public class HomeController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
+	@RequestMapping(value = "/loginuser", method = RequestMethod.GET)
+	public String loginUser(Model model, @ModelAttribute("loginForm") @Valid LoginModel loginModel, BindingResult bindingResult, HttpServletRequest request) {
+		String redirection = "login";
+		UserModel user = null;
+		List<CategoryModel> categoryList = null;
+		List<DifficultyLevelModel> difficultyList = null;
+		try {
+			if (!bindingResult.hasErrors()) {
+				user = quizMeService.getUserDetails(loginModel);
+				if(user != null) {
+					categoryList = quizMeService.getCategories();
+					difficultyList = quizMeService.getDifficultyLevels();
+					
+					session = request.getSession();
+					session.setAttribute("userId", Integer.valueOf(user.getUserId()));
+					session.setAttribute("userName", user.getUserName());
+					session.setAttribute("userDetails", user);
+					session.setAttribute("categoryList", categoryList);
+					session.setAttribute("difficultyList", difficultyList);
+					redirection = "redirect:/getQuiz";
+				} else {
+					model.addAttribute("loginError", "Error Logging in");
+				}
+			}
+		} catch (Exception exception) {
+			model.addAttribute("loginError", "Error Logging in");
+		}
+		return redirection;
+	}
+	
+	/**
+	 * Simply selects the home view to render by returning its name.
+	 */
 	@RequestMapping(value = "/usersignup", method = RequestMethod.GET)
 	public String userSignUp(Model model) {
 		model.addAttribute("signUpForm", new UserModel());
@@ -89,13 +126,56 @@ public class HomeController {
 						model.addAttribute("signingUpError", "Error Signing up");
 					}
 				}
-			} else {
-				model.addAttribute("signingUpError", "Error Signing up");
-			}
+			} 
 		} catch (Exception exception) {
 			model.addAttribute("signingUpError", "Error Signing up");
 		}
 		return redirection;
 	}
 	
+	/**
+	 * Simply selects the home view to render by returning its name.
+	 */
+	@RequestMapping(value = "/changeSettings", method = RequestMethod.GET)
+	public String changeSettings(Model model, HttpServletRequest request) {
+		String redirection = "signUp";
+		session = request.getSession();
+		model.addAttribute("changeSettings", "Enable Change Settings button");
+		UserModel user = (UserModel) session.getAttribute("userDetails");
+		if(user != null) {
+			model.addAttribute("signUpForm", user);
+		} else {
+			model.addAttribute("signUpForm", new UserModel());
+		}
+		return redirection;
+	}
+	
+	/**
+	 * Simply selects the home view to render by returning its name.
+	 */
+	@RequestMapping(value = "/savechanges", method = RequestMethod.POST)
+	public String saveChanges(@ModelAttribute("signUpForm") @Valid UserModel userModel, BindingResult bindingResult, Model model, final RedirectAttributes redirectAttributes) { 
+		boolean isUserUpdated = false;
+		String redirection = "signUp";
+		model.addAttribute("changeSettings", "Enable Change Settings button");
+		try {
+			if (!bindingResult.hasErrors()) {
+				if(!userModel.getPassword().equals(userModel.getConfirmPassword())) {
+					model.addAttribute("signingUpError", "passwords mismatch");
+				} else {
+					userModel.setUserId(((Integer)session.getAttribute("userId")).intValue());
+					isUserUpdated = quizMeService.updateUserDetails(userModel);
+					if(isUserUpdated) {
+						redirectAttributes.addFlashAttribute("information", "User signedup successfully");
+						redirection = "redirect:/login";
+					} else {
+						model.addAttribute("signingUpError", "Error Signing up");
+					}
+				}
+			} 
+		} catch (Exception exception) {
+			model.addAttribute("signingUpError", "Error Signing up");
+		}
+		return redirection;
+	}
 }

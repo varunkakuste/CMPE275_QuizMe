@@ -7,7 +7,7 @@
 	
     	
         <div class="panel-body">
-			<div class="table-responsive" style="overflow-y: auto; height: 190px;">
+			<div class="table-responsive" style="overflow-y: auto; height: 200px;">
 				<table class="table table-striped table-bordered table-hover" id="dataTables-example">
 					<thead>
 	                   <tr style="background-color: #404040; color: #F8F8F8;">

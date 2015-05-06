@@ -16,6 +16,13 @@
 				signUpForm.submit();
 			}	
 			
+			function saveChanges() {
+				var signUpForm = document.forms['signUpFormId'];
+				signUpForm.method = "POST";
+				signUpForm.action = "savechanges";
+				signUpForm.submit();
+			}
+			
 			function cancel() {
 				var signUpForm = document.forms['signUpFormId'];
 				signUpForm.method = "get";
@@ -61,31 +68,38 @@
 							<tbody>
 								<tr>
 									<td>First Name: </td>
-									<td><form:input path="firstName" /></td>
+									<td><form:input path="firstName" placeholder="enter your first name" /></td>
 								</tr>
 								<tr>
 									<td>Last Name: </td>
-									<td><form:input path="lastName" /></td>
+									<td><form:input path="lastName" placeholder="enter your last name" /></td>
 								</tr>
 								<tr>
 									<td>userName: </td>
-									<td><form:input path="userName" /> <label style="color: red;"><form:errors path="userName" element="div" /></label></td>
+									<td><form:input path="userName" placeholder="enter user name" /> <label style="color: red;"><form:errors path="userName" element="div" /></label></td>
 								</tr>
 								<tr>
 									<td>Email: </td>
-									<td><form:input path="email" /> <label style="color: red;"><form:errors path="email" element="div" /></label></td>
+									<td><form:input path="email" placeholder="enter email"/> <label style="color: red;"><form:errors path="email" element="div" /></label></td>
 								</tr>
 								<tr>
 									<td>Password: </td>
-									<td><form:input path="password" /> <label style="color: red;"><form:errors path="password" element="div" /></label></td>
+									<td><form:input path="password" type="password" placeholder="enter password"/> <label style="color: red;"><form:errors path="password" element="div" /></label></td>
 								</tr>
 								<tr>
 									<td>Confirm Password: </td>
-									<td><form:input path="confirmPassword" /> <label style="color: red;"><form:errors path="confirmPassword" element="div" /></label></td>
+									<td><form:input path="confirmPassword" type="password" placeholder="enter confirm password" /> <label style="color: red;"><form:errors path="confirmPassword" element="div" /></label></td>
 								</tr>
 							</tbody>
 						</table>
-						<button type="button" class="btn btn-sm btn-primary" onclick="javascript: signUp();">Register</button>
+						<c:choose>
+							<c:when test="${changeSettings ne null && not empty changeSettings}">
+								<button type="button" class="btn btn-sm btn-primary" onclick="javascript: saveChanges();">Save Changes</button>
+							</c:when>
+							<c:otherwise>
+								<button type="button" class="btn btn-sm btn-primary" onclick="javascript: signUp();">Register</button>
+							</c:otherwise>
+						</c:choose>
 						<button type="button" class="btn btn-sm btn-warning" onclick="javascript: cancel();">Cancel</button>
 					</div>
 				</div>

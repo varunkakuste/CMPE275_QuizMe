@@ -51,7 +51,7 @@
 		        	<h3 class="panel-title">Search Quiz</h3>
 		        </div>
 		        <div class="panel-body">
-					<div class="table-responsive" style="overflow-y: auto; height: 150px;">
+					<div class="table-responsive" style="overflow-y: auto; height: 140px;">
 						<table class="table table-striped table-bordered table-hover" id="dataTables-example">
 							<thead>
 			                   <tr style="background-color: #404040; color: #F8F8F8;">
@@ -61,7 +61,7 @@
 							<tbody>
 								<tr>
 									<td>Enter Quiz Name: </td>
-									<td><form:input path="quizName" /></td>
+									<td><form:input path="quizName" placeholder="enter quiz name to search for" /></td>
 								
 									<td>Category: </td>
 									<td>
@@ -81,7 +81,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<button type="button" class="btn btn-sm btn-primary" onclick="javascript: getQuiz();">Search </button>
+						<button type="button" class="btn btn-sm btn-primary" onclick="javascript: getQuiz();">Search</button>
 					</div>
 					<div id="quizList">
 					
