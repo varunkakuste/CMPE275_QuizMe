@@ -88,30 +88,6 @@ public class QuizMeServiceImpl implements IQuizMeService {
 		return null;
 	}
 
-//	/**
-//	 * Method to SignUp
-//	 */
-//	@Override
-//	public boolean signUp(UserModel user) throws Exception {
-//		return quizMeDao.signUp(user);
-//	}
-//
-//	/**
-//	 * Method to get user details
-//	 */
-//	@Override
-//	public UserModel getUserDetails(LoginModel login) throws Exception {
-//		return quizMeDao.getUserDetails(login);
-//	}
-//
-//	/**
-//	 * Method to update user details
-//	 */
-//	@Override
-//	public boolean updateUserDetails(UserModel user) throws Exception {
-//		return quizMeDao.updateUserDetails(user);
-//	}
-	
 	/**
 	 * Method to get user's dashboard Quiz in Database
 	 */

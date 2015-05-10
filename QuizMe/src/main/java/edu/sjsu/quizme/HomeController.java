@@ -90,8 +90,7 @@ public class HomeController {
 					session.setAttribute("userDetails", user);
 					session.setAttribute("categoryList", categoryList);
 					session.setAttribute("difficultyList", difficultyList);
-//					redirection = "redirect:/getTaken";
-					redirection = "redirect:/createNewQuiz";
+					redirection = "redirect:/getTaken";
 				} else {
 					model.addAttribute("loginError", "Error Logging in");
 				}

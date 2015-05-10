@@ -20,8 +20,5 @@ public interface IQuizMeService {
 	public List<DifficultyLevelModel> getDifficultyLevels() throws Exception;
 	public void createQuiz(QuizModel quiz) throws Exception;
 	public ArrayList<String> getQuiz(QuizModel quiz,int  userId) throws Exception;
-//	public boolean signUp(UserModel user) throws Exception;
-//	public UserModel getUserDetails(LoginModel login) throws Exception;
-//	public boolean updateUserDetails(UserModel user) throws Exception;
 	public ArrayList<QuizModel> getTakenQuiz(int userId) throws Exception;
 }
