@@ -56,4 +56,8 @@
     <definition name="help" extends="base.definition"> 
        <put-attribute name="body" value="/WEB-INF/views/help.jsp" />  
     </definition>
+    
+    <definition name="takenList" extends="base.definition"> 
+       <put-attribute name="body" value="/WEB-INF/views/takenList.jsp" />  
+    </definition>
 </tiles-definitions>  
