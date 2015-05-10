@@ -114,15 +114,18 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public String signUp(@ModelAttribute("signUpForm") @Valid UserModel userModel, BindingResult bindingResult, Model model, final RedirectAttributes redirectAttributes) { 
+	public String signUp(@ModelAttribute("signUpForm") @Valid UserModel userModel, BindingResult bindingResult, Model model, 
+			final RedirectAttributes redirectAttributes) { 
 		boolean isSignedUp = false;
 		String redirection = "signUp";
+		RestTemplate restTemplate = null;
 		try {
 			if (!bindingResult.hasErrors()) {
 				if(!userModel.getPassword().equals(userModel.getConfirmPassword())) {
 					model.addAttribute("signingUpError", "passwords mismatch");
 				} else {
-					isSignedUp = quizMeService.signUp(userModel);
+					restTemplate = new RestTemplate();
+					isSignedUp = restTemplate.postForObject(AUTHENTICATION_URL+"/signup", userModel, Boolean.class);
 					if(isSignedUp) {
 						redirectAttributes.addFlashAttribute("information", "User signedup successfully");
 						redirection = "redirect:/login";
