@@ -32,7 +32,7 @@ public class QuizModel {
 	private List<CategoryModel> categoryModelList;
 	
 	/**
-	 * difficultyLevelModel
+	 * difficultyLevelModelList
 	 */
 	private List<DifficultyLevelModel> difficultyLevelModelList;
 	
@@ -42,19 +42,24 @@ public class QuizModel {
 	private List<QuestionModel> questionsList;
 	
 	/**
-	 * questionsList
+	 * quiz_id
 	 */
 	private int quiz_id;
 	
 	/**
-	 * questionsList
+	 * score
 	 */
 	private int score;
 	
 	/**
-	 * questionsList
+	 * comment
 	 */
 	private String comment;
+	
+	/**
+	 * selectedQuizId
+	 */
+	private int selectedQuizId;
 
 	/**
 	 * @return the quizName
@@ -181,6 +186,20 @@ public class QuizModel {
 	 */
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	/**
+	 * @return the selectedQuizId
+	 */
+	public int getSelectedQuizId() {
+		return selectedQuizId;
+	}
+
+	/**
+	 * @param selectedQuizId the selectedQuizId to set
+	 */
+	public void setSelectedQuizId(int selectedQuizId) {
+		this.selectedQuizId = selectedQuizId;
 	}
 
 }

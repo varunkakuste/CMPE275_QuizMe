@@ -4,6 +4,7 @@
 package edu.sjsu.quizme.dao.layer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import edu.sjsu.quizme.models.CategoryModel;
@@ -22,6 +23,7 @@ public interface IQuizMeDao {
 	public int getMaxQuizId() throws Exception;
 	public void createQuiz(QuizModel quiz) throws Exception;
 	public void createQuestions(List<QuestionModel> questionsList) throws Exception;
-	public ArrayList<String> getQuiz(QuizModel quiz, int userId) throws Exception;
+//	public ArrayList<String> getQuiz(QuizModel quiz, int userId) throws Exception;
+	public HashMap<Integer, String> getQuiz(QuizModel quiz, int userId) throws Exception;
 	public ArrayList<QuizModel> getTakenQuiz(int userId) throws Exception;
 }

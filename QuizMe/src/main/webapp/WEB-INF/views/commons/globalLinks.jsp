@@ -6,7 +6,7 @@
 
 <script type="text/javascript">
 	function changeSettings() {
-		var signUpForm = document.forms['quizFormId'];
+		var signUpForm = document.forms['globalLinksId'];
 		signUpForm.method = "get";
 		signUpForm.action = "changeSettings";
 		signUpForm.submit();

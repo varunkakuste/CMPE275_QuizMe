@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -243,16 +244,54 @@ public class QuizMeDaoImpl implements IQuizMeDao {
 		}
 	}
 	
+//	/**
+//	 * Method to get the quizzes in Database
+//	 * @throws Exception 
+//	 */
+//	public ArrayList<String> getQuiz(QuizModel quiz, int userId) throws Exception {
+//		Connection connection = null;
+//		PreparedStatement preparedStatement = null;
+//		ResultSet resultSet = null;
+//		ArrayList<String> quizList=new ArrayList<String>();
+//		
+//		try {
+//			connection = (Connection) dataSource.getConnection();
+//			preparedStatement = (PreparedStatement) connection.prepareStatement(QuizMeQueries.GET_QUIZ_LIST_QUERY);
+//			preparedStatement.setString(1, quiz.getQuizName()+"%");
+//			preparedStatement.setInt(2, quiz.getCategory());
+//			preparedStatement.setInt(3, quiz.getDifficultyLevel());
+//			preparedStatement.setInt(4, userId);
+//			resultSet = preparedStatement.executeQuery();
+//			while(resultSet.next()) {
+//				quizList.add(resultSet.getString("QUIZ_NAME"));
+//			}
+//		} catch (SQLException sql) {
+//			throw new Exception(sql);
+//		} catch (Exception exp){
+//			throw new Exception(exp);
+//		} finally {
+//			if (connection != null) {
+//				try {
+//					connection.close();
+//				} catch (SQLException sql) {
+//					throw new Exception(sql);
+//				}
+//			}
+//		}
+//		return quizList;
+//	}
+	
 	/**
 	 * Method to get the quizzes in Database
 	 * @throws Exception 
 	 */
-	public ArrayList<String> getQuiz(QuizModel quiz, int userId) throws Exception {
+	public HashMap<Integer, String> getQuiz(QuizModel quiz, int userId) throws Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		ArrayList<String> quizList=new ArrayList<String>();
-		
+		HashMap<Integer, String> quizMap = new HashMap<Integer, String>();
+		Integer quizId = 0;
+		String quizName = null;
 		try {
 			connection = (Connection) dataSource.getConnection();
 			preparedStatement = (PreparedStatement) connection.prepareStatement(QuizMeQueries.GET_QUIZ_LIST_QUERY);
@@ -262,7 +301,9 @@ public class QuizMeDaoImpl implements IQuizMeDao {
 			preparedStatement.setInt(4, userId);
 			resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()) {
-				quizList.add(resultSet.getString("QUIZ_NAME"));
+				quizId = resultSet.getInt("QUIZ_ID");
+				quizName = resultSet.getString("QUIZ_NAME");
+				quizMap.put(quizId, quizName);
 			}
 		} catch (SQLException sql) {
 			throw new Exception(sql);
@@ -277,7 +318,7 @@ public class QuizMeDaoImpl implements IQuizMeDao {
 				}
 			}
 		}
-		return quizList;
+		return quizMap;
 	}
 
 	/**

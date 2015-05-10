@@ -5,8 +5,12 @@
 <html>
 <head>
 <script type="text/javascript">
-	function home() {
-		alert("this is home");
+	function getUserDashboard(){
+		var quizForm = document.forms['quizForm'];
+		quizForm.method = "get";
+		quizForm.action = "getTaken";
+		quizForm.submit();
+	
 	}
 	
 	function createQuiz() {
@@ -32,10 +36,9 @@
 			<div class="container">
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
-						<li><a href="javascript:home();">Home</a></li>
-						<li><a href="javascript:home();">User Dashboard</a></li>
-						<li><a href="javascript:createQuiz();">Create Quiz</a></li>
-						<li><a href="javascript:searchQuiz();">Search Quiz</a></li>
+						<li><a href="javascript: getUserDashboard();">User Dashboard</a></li>
+						<li><a href="javascript: createQuiz();">Create Quiz</a></li>
+						<li><a href="javascript: searchQuiz();">Search Quiz</a></li>
 					</ul>
 				</div>
 			</div>

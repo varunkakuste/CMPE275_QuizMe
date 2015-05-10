@@ -4,6 +4,7 @@
 package edu.sjsu.quizme.service.layer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -14,9 +15,7 @@ import org.springframework.stereotype.Component;
 import edu.sjsu.quizme.dao.layer.IQuizMeDao;
 import edu.sjsu.quizme.models.CategoryModel;
 import edu.sjsu.quizme.models.DifficultyLevelModel;
-import edu.sjsu.quizme.models.LoginModel;
 import edu.sjsu.quizme.models.QuizModel;
-import edu.sjsu.quizme.models.UserModel;
 
 /**
  * @author Varun
@@ -77,11 +76,22 @@ public class QuizMeServiceImpl implements IQuizMeService {
 		quizMeDao.createQuestions(quiz.getQuestionsList());
 	}
 	
+//	/**
+//	 * Method to search Quiz in Database
+//	 */
+//	@Override
+//	public ArrayList<String> getQuiz(QuizModel quiz, int userId) throws Exception {
+//		if(quiz != null){
+//			return quizMeDao.getQuiz(quiz, userId);
+//		}
+//		return null;
+//	}
+	
 	/**
 	 * Method to search Quiz in Database
 	 */
 	@Override
-	public ArrayList<String> getQuiz(QuizModel quiz, int userId) throws Exception {
+	public HashMap<Integer, String> getQuiz(QuizModel quiz, int userId) throws Exception {
 		if(quiz != null){
 			return quizMeDao.getQuiz(quiz, userId);
 		}
