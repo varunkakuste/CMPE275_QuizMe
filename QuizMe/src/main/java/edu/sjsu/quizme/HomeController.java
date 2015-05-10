@@ -18,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.sjsu.quizme.models.CategoryModel;
@@ -36,6 +37,7 @@ public class HomeController {
 	@Autowired
 	private IQuizMeService quizMeService;
 	private HttpSession session = null;
+	private static final String AUTHENTICATION_URL = "http://quizmeauthentication.elasticbeanstalk.com";
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -73,9 +75,11 @@ public class HomeController {
 		UserModel user = null;
 		List<CategoryModel> categoryList = null;
 		List<DifficultyLevelModel> difficultyList = null;
+		RestTemplate restTemplate = null;
 		try {
 			if (!bindingResult.hasErrors()) {
-				user = quizMeService.getUserDetails(loginModel);
+				restTemplate = new RestTemplate();
+				user = restTemplate.getForObject(AUTHENTICATION_URL+"/loginAuthentication?userName="+loginModel.getUserName()+"&password="+loginModel.getPassword(), UserModel.class);
 				if(user != null) {
 					categoryList = quizMeService.getCategories();
 					difficultyList = quizMeService.getDifficultyLevels();
@@ -86,7 +90,7 @@ public class HomeController {
 					session.setAttribute("userDetails", user);
 					session.setAttribute("categoryList", categoryList);
 					session.setAttribute("difficultyList", difficultyList);
-					redirection = "redirect:/getQuiz";
+					redirection = "redirect:/getTaken";
 				} else {
 					model.addAttribute("loginError", "Error Logging in");
 				}
