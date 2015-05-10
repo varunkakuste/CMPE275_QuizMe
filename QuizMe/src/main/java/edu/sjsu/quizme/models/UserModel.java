@@ -9,10 +9,13 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * @author Varun
  *
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserModel {
 	
 	private int userId;

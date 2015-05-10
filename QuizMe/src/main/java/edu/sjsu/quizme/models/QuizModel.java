@@ -40,6 +40,21 @@ public class QuizModel {
 	 * questionsList
 	 */
 	private List<QuestionModel> questionsList;
+	
+	/**
+	 * questionsList
+	 */
+	private int quiz_id;
+	
+	/**
+	 * questionsList
+	 */
+	private int score;
+	
+	/**
+	 * questionsList
+	 */
+	private String comment;
 
 	/**
 	 * @return the quizName
@@ -124,6 +139,48 @@ public class QuizModel {
 	 */
 	public void setQuestionsList(List<QuestionModel> questionsList) {
 		this.questionsList = questionsList;
+	}
+
+	/**
+	 * @return the quiz_id
+	 */
+	public int getQuiz_id() {
+		return quiz_id;
+	}
+
+	/**
+	 * @param quiz_id the quiz_id to set
+	 */
+	public void setQuiz_id(int quiz_id) {
+		this.quiz_id = quiz_id;
+	}
+
+	/**
+	 * @return the score
+	 */
+	public int getScore() {
+		return score;
+	}
+
+	/**
+	 * @param score the score to set
+	 */
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	/**
+	 * @return the comment
+	 */
+	public String getComment() {
+		return comment;
+	}
+
+	/**
+	 * @param comment the comment to set
+	 */
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 }

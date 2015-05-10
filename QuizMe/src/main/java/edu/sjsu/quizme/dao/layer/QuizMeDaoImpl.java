@@ -18,10 +18,8 @@ import org.springframework.stereotype.Component;
 
 import edu.sjsu.quizme.models.CategoryModel;
 import edu.sjsu.quizme.models.DifficultyLevelModel;
-import edu.sjsu.quizme.models.LoginModel;
 import edu.sjsu.quizme.models.QuestionModel;
 import edu.sjsu.quizme.models.QuizModel;
-import edu.sjsu.quizme.models.UserModel;
 import edu.sjsu.quizme.queries.QuizMeQueries;
 
 /**
@@ -282,116 +280,187 @@ public class QuizMeDaoImpl implements IQuizMeDao {
 		return quizList;
 	}
 
-	/**
-	 * Method to SignUp
-	 */
-	@Override
-	public boolean signUp(UserModel user) throws Exception {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		boolean isUserSignedUp = false;
-		try {
-			connection = dataSource.getConnection();
-			preparedStatement = connection.prepareStatement(QuizMeQueries.SIGNUP_USER_QUERY);
-			preparedStatement.setString(1, user.getUserName());
-			preparedStatement.setString(2, user.getEmail());
-			preparedStatement.setString(3, user.getPassword());
-			preparedStatement.setString(4, user.getLastName());
-			preparedStatement.setString(5, user.getFirstName());
-			
-			preparedStatement.executeUpdate();
-			preparedStatement.close();
-			isUserSignedUp = true;
-		} catch (SQLException sql) {
-			throw new Exception(sql);
-		} catch (Exception exp){
-			throw new Exception(exp);
-		} finally {
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException sql) {
-					throw new Exception(sql);
-				}
-			}
-		}
-		return isUserSignedUp;
-	}
+//	/**
+//	 * Method to SignUp
+//	 */
+//	@Override
+//	public boolean signUp(UserModel user) throws Exception {
+//		Connection connection = null;
+//		PreparedStatement preparedStatement = null;
+//		boolean isUserSignedUp = false;
+//		try {
+//			connection = dataSource.getConnection();
+//			preparedStatement = connection.prepareStatement(QuizMeQueries.SIGNUP_USER_QUERY);
+//			preparedStatement.setString(1, user.getUserName());
+//			preparedStatement.setString(2, user.getEmail());
+//			preparedStatement.setString(3, user.getPassword());
+//			preparedStatement.setString(4, user.getLastName());
+//			preparedStatement.setString(5, user.getFirstName());
+//			
+//			preparedStatement.executeUpdate();
+//			preparedStatement.close();
+//			isUserSignedUp = true;
+//		} catch (SQLException sql) {
+//			throw new Exception(sql);
+//		} catch (Exception exp){
+//			throw new Exception(exp);
+//		} finally {
+//			if (connection != null) {
+//				try {
+//					connection.close();
+//				} catch (SQLException sql) {
+//					throw new Exception(sql);
+//				}
+//			}
+//		}
+//		return isUserSignedUp;
+//	}
+//	
+//	/**
+//	 * Method to get user details
+//	 */
+//	@Override
+//	public UserModel getUserDetails(LoginModel login) throws Exception {
+//		Connection connection = null;
+//		PreparedStatement preparedStatement = null;
+//		ResultSet resultSet = null;
+//		UserModel user = null;		
+//		try {
+//			connection = (Connection) dataSource.getConnection();
+//			preparedStatement = (PreparedStatement) connection.prepareStatement(QuizMeQueries.GET_USER_DETAILS);
+//			preparedStatement.setString(1, login.getUserName());
+//			preparedStatement.setString(2, login.getPassword());
+//			resultSet = preparedStatement.executeQuery();
+//			if(resultSet.next()) {
+//				user = new UserModel();
+//				user.setUserId(resultSet.getInt("USER_ID"));
+//				user.setUserName(resultSet.getString("USERNAME"));
+//				user.setEmail(resultSet.getString("EMAIL"));
+//				user.setPassword(resultSet.getString("PASSWORD"));
+//				user.setLastName(resultSet.getString("LASTNAME"));
+//				user.setFirstName(resultSet.getString("FIRSTNAME"));
+//			}
+//		} catch (SQLException sql) {
+//			throw new Exception(sql);
+//		} catch (Exception exp){
+//			throw new Exception(exp);
+//		} finally {
+//			if (connection != null) {
+//				try {
+//					connection.close();
+//				} catch (SQLException sql) {
+//					throw new Exception(sql);
+//				}
+//			}
+//		}
+//		return user;
+//	}
+//	
+//	/**
+//	 * Method to update user details
+//	 */
+//	@Override
+//	public boolean updateUserDetails(UserModel user) throws Exception {
+//		Connection connection = null;
+//		PreparedStatement preparedStatement = null;
+//		boolean isUserUpdated = false;
+//		try {
+//			connection = dataSource.getConnection();
+//			preparedStatement = connection.prepareStatement(QuizMeQueries.UPDATE_USER_DETAILS);
+//			preparedStatement.setString(1, user.getUserName());
+//			preparedStatement.setString(2, user.getEmail());
+//			preparedStatement.setString(3, user.getPassword());
+//			preparedStatement.setString(4, user.getLastName());
+//			preparedStatement.setString(5, user.getFirstName());
+//			preparedStatement.setInt(6, user.getUserId());
+//			
+//			preparedStatement.executeUpdate();
+//			preparedStatement.close();
+//			isUserUpdated = true;
+//		} catch (SQLException sql) {
+//			throw new Exception(sql);
+//		} catch (Exception exp){
+//			throw new Exception(exp);
+//		} finally {
+//			if (connection != null) {
+//				try {
+//					connection.close();
+//				} catch (SQLException sql) {
+//					throw new Exception(sql);
+//				}
+//			}
+//		}
+//		return isUserUpdated;
+//	}
 	
-	/**
-	 * Method to get user details
-	 */
 	@Override
-	public UserModel getUserDetails(LoginModel login) throws Exception {
+	public ArrayList<QuizModel> getTakenQuiz(int userId){
+		// TODO Auto-generated method stub
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		UserModel user = null;		
-		try {
-			connection = (Connection) dataSource.getConnection();
-			preparedStatement = (PreparedStatement) connection.prepareStatement(QuizMeQueries.GET_USER_DETAILS);
-			preparedStatement.setString(1, login.getUserName());
-			preparedStatement.setString(2, login.getPassword());
-			resultSet = preparedStatement.executeQuery();
-			if(resultSet.next()) {
-				user = new UserModel();
-				user.setUserId(resultSet.getInt("USER_ID"));
-				user.setUserName(resultSet.getString("USERNAME"));
-				user.setEmail(resultSet.getString("EMAIL"));
-				user.setPassword(resultSet.getString("PASSWORD"));
-				user.setLastName(resultSet.getString("LASTNAME"));
-				user.setFirstName(resultSet.getString("FIRSTNAME"));
+		ArrayList<QuizModel> quizList=new ArrayList<QuizModel>();
+		
+		System.out.println("in getTaken imp");
+		
+			try {
+				connection = (Connection) dataSource.getConnection();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (SQLException sql) {
-			throw new Exception(sql);
-		} catch (Exception exp){
-			throw new Exception(exp);
-		} finally {
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException sql) {
-					throw new Exception(sql);
+			try {
+				preparedStatement = (PreparedStatement) connection.prepareStatement(QuizMeQueries.GET_TAKEN);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				preparedStatement.setInt(1, userId);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				resultSet = preparedStatement.executeQuery();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				while(resultSet.next()) {
+					int quizid=resultSet.getInt("QUIZ_ID");
+					String quizname=resultSet.getString("QUIZ_NAME");
+					int score=resultSet.getInt("SCORE");
+					String comment1=resultSet.getString("COMMENTS");
+					
+					QuizModel temp= new QuizModel();
+					temp.setQuiz_id(quizid);
+					temp.setQuizName(quizname);
+					temp.setScore(score);
+					temp.setComment(comment1);
+					
+					System.out.println(temp.getQuiz_id());
+					System.out.println(temp.getQuizName());
+					System.out.println(temp.getScore());
+					
+					quizList.add(temp);
 				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		}
-		return user;
-	}
-	
-	/**
-	 * Method to update user details
-	 */
-	@Override
-	public boolean updateUserDetails(UserModel user) throws Exception {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		boolean isUserUpdated = false;
-		try {
-			connection = dataSource.getConnection();
-			preparedStatement = connection.prepareStatement(QuizMeQueries.UPDATE_USER_DETAILS);
-			preparedStatement.setString(1, user.getUserName());
-			preparedStatement.setString(2, user.getEmail());
-			preparedStatement.setString(3, user.getPassword());
-			preparedStatement.setString(4, user.getLastName());
-			preparedStatement.setString(5, user.getFirstName());
-			preparedStatement.setInt(6, user.getUserId());
-			
-			preparedStatement.executeUpdate();
-			preparedStatement.close();
-			isUserUpdated = true;
-		} catch (SQLException sql) {
-			throw new Exception(sql);
-		} catch (Exception exp){
-			throw new Exception(exp);
-		} finally {
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException sql) {
-					throw new Exception(sql);
-				}
+					
+			finally{	
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		}
-		return isUserUpdated;
+		
+			}
+		System.out.println(quizList);
+		return quizList;
 	}
 }
