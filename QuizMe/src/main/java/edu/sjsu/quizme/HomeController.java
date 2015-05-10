@@ -90,7 +90,8 @@ public class HomeController {
 					session.setAttribute("userDetails", user);
 					session.setAttribute("categoryList", categoryList);
 					session.setAttribute("difficultyList", difficultyList);
-					redirection = "redirect:/getTaken";
+//					redirection = "redirect:/getTaken";
+					redirection = "redirect:/createNewQuiz";
 				} else {
 					model.addAttribute("loginError", "Error Logging in");
 				}
@@ -182,4 +183,17 @@ public class HomeController {
 		}
 		return redirection;
 	}
+	
+	/**
+	 * logoutPage()
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public String logoutPage(HttpServletRequest request) {
+		logger.info("HomeController class --->>> logoutPage() Method Start");
+		request.getSession().invalidate();
+		logger.info("HomeController class --->>> logoutPage() Method End");
+        return "redirect:/login";
+    }
 }

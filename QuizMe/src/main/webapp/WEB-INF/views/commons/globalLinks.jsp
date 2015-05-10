@@ -13,7 +13,13 @@
 	}
 
 	function logout() {
-		alert("logout...");
+		var confirmmsg = confirm('Do you want to logout...?');
+		if(confirmmsg) {
+			var globalLinksForm = document.forms['globalLinksId'];
+			globalLinksForm.method = "post";
+			globalLinksForm.action = "logout";
+			globalLinksForm.submit();
+		}
  	}
 	
 	function help() {
@@ -21,7 +27,7 @@
 	}
 </script>
 
-<form:form id="quizFormId" modelAttribute="quizForm">
+<form:form id="globalLinksId" modelAttribute="globalLinksForm">
 	<div id="GlobalLinksTop">
 		<div>
 		    <ul>
