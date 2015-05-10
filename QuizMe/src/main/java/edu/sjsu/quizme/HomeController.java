@@ -162,22 +162,19 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/savechanges", method = RequestMethod.POST)
 	public String saveChanges(@ModelAttribute("signUpForm") @Valid UserModel userModel, BindingResult bindingResult, Model model, final RedirectAttributes redirectAttributes) { 
-		boolean isUserUpdated = false;
 		String redirection = "signUp";
 		model.addAttribute("changeSettings", "Enable Change Settings button");
+		RestTemplate restTemplate = null;
 		try {
 			if (!bindingResult.hasErrors()) {
 				if(!userModel.getPassword().equals(userModel.getConfirmPassword())) {
 					model.addAttribute("signingUpError", "passwords mismatch");
 				} else {
 					userModel.setUserId(((Integer)session.getAttribute("userId")).intValue());
-					isUserUpdated = quizMeService.updateUserDetails(userModel);
-					if(isUserUpdated) {
-						redirectAttributes.addFlashAttribute("information", "User signedup successfully");
-						redirection = "redirect:/login";
-					} else {
-						model.addAttribute("signingUpError", "Error Signing up");
-					}
+					restTemplate = new RestTemplate();
+					restTemplate.put(AUTHENTICATION_URL+"/savechanges", userModel);
+					redirectAttributes.addFlashAttribute("information", "User signedup successfully");
+					redirection = "redirect:/login";
 				}
 			} 
 		} catch (Exception exception) {
