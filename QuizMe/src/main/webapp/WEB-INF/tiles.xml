@@ -53,4 +53,7 @@
        <put-attribute name="body" value="/WEB-INF/views/signUp.jsp" />  
     </definition>
     
+    <definition name="help" extends="base.definition"> 
+       <put-attribute name="body" value="/WEB-INF/views/help.jsp" />  
+    </definition>
 </tiles-definitions>  

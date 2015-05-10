@@ -196,4 +196,15 @@ public class HomeController {
 		logger.info("HomeController class --->>> logoutPage() Method End");
         return "redirect:/login";
     }
+	
+	/**
+	 * help()
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/help", method = RequestMethod.GET)
+    public String help(HttpServletRequest request) {
+		logger.info("HomeController class --->>> help() Method Start/End");
+        return "help";
+    }
 }

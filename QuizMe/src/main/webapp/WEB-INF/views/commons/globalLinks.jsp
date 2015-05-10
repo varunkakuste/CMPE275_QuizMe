@@ -23,7 +23,10 @@
  	}
 	
 	function help() {
-		alert("help...");
+		var filesForm = document.forms['globalLinksId'];
+		filesForm.method = "get";
+		filesForm.action = "help";
+		filesForm.submit();
 	}
 </script>
 
