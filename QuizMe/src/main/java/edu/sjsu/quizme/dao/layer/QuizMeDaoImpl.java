@@ -393,6 +393,9 @@ public class QuizMeDaoImpl implements IQuizMeDao {
 //		return isUserUpdated;
 //	}
 	
+	/**
+	 * Method to get user's dashboard Quiz in Database
+	 */
 	@Override
 	public ArrayList<QuizModel> getTakenQuiz(int userId){
 		// TODO Auto-generated method stub
