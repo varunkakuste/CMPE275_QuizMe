@@ -209,4 +209,32 @@ public class QuizMeController {
 		}
 		return "quizList";
 	}
+	
+	/**
+	 * Method to get user's dashboard Quiz in Database
+	 */
+	@RequestMapping(value = "/getTaken", method = RequestMethod.GET)
+	public  String getTaken(HttpServletRequest request, Model model, @ModelAttribute("quizCreatedMessage") String infoMessage) {
+		int userId = 0;
+		QuizModel quiz = null; 
+		ArrayList<QuizModel> statTaken = null;
+		try {
+			System.out.println("before session get");
+			
+			session = request.getSession();
+			System.out.println("before session user details");
+			
+			UserModel user = (UserModel) session.getAttribute("userDetails");
+			if(user != null) {
+				userId = user.getUserId();
+			}
+			System.out.println("before calling get taken");
+			statTaken = quizMeService.getTakenQuiz(userId);
+			model.addAttribute("quizTaken", statTaken);
+			model.addAttribute("quizCreatedMessage", infoMessage);
+		} catch (Exception exception) {
+			System.out.println("Some Exception...");
+		}
+		return "takenList";
+	}
 }
