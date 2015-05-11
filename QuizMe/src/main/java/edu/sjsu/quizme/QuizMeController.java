@@ -5,8 +5,10 @@ package edu.sjsu.quizme;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -21,6 +23,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.sjsu.quizme.models.CategoryModel;
@@ -189,31 +192,6 @@ public class QuizMeController {
 		return redirection;
 	}
 	
-//	@RequestMapping(value = "/getQuiz", method = RequestMethod.GET)
-//	public  String getQuiz(HttpServletRequest request, Model model){
-//		QuizModel quizModel = null;
-//		try {
-//			session = request.getSession();
-//			quizModel = (QuizModel) session.getAttribute("quizForm");
-//			if(quizModel == null) {
-////				categoryList = quizMeService.getCategories();
-////				difficultyList = quizMeService.getDifficultyLevels();
-//				categoryList = (List<CategoryModel>) session.getAttribute("categoryList");
-//				difficultyList = (List<DifficultyLevelModel>) session.getAttribute("difficultyList");
-//				
-//				quizModel = new QuizModel();
-//				quizModel.setCategoryModelList(categoryList);
-//				quizModel.setDifficultyLevelModelList(difficultyList);
-//				
-//				session.setAttribute("quizForm", quizModel);
-//			}
-//			model.addAttribute("quizForm", quizModel);
-//		} catch (Exception exception) {
-//			System.out.println("Some Exception...");
-//		}
-//		return "quiz";
-//	}
-	
 	@RequestMapping(value = "/getQuiz", method = RequestMethod.GET)
 	public  String getQuiz(Model model, @ModelAttribute("quizMap") HashMap<Integer, String> quizMap, @ModelAttribute("getQuizCatchError") String error, HttpServletRequest request){
 		QuizModel quizModel = null;
@@ -240,33 +218,6 @@ public class QuizMeController {
 		}
 		return redirection;
 	}
-	
-//	@RequestMapping(value = "/getQuizList", method = RequestMethod.POST)
-//	public  String getQuizList(HttpServletRequest request, Model model, @ModelAttribute("quizForm") QuizModel quizModelAttribute) {
-//		int userId = 0;
-//		QuizModel quiz = null; 
-//		ArrayList<String> quizList = null;
-//		try {
-//			session = request.getSession();
-//			UserModel user = (UserModel) session.getAttribute("userDetails");
-//			if(user != null) {
-//				userId = user.getUserId();
-//			}
-//			quiz = new QuizModel();
-//			quiz.setCategory(quizModelAttribute.getCategory());
-//			quiz.setDifficultyLevel(quizModelAttribute.getDifficultyLevel());
-//			if(quizModelAttribute.getQuizName() == null || quizModelAttribute.getQuizName().isEmpty()) {
-//				quiz.setQuizName("");
-//			} else {
-//				quiz.setQuizName(quizModelAttribute.getQuizName());
-//			}
-//			quizList = quizMeService.getQuiz(quiz, userId);
-//			model.addAttribute("quizList", quizList);
-//		} catch (Exception exception) {
-//			System.out.println("Some Exception...");
-//		}
-//		return "quizList";
-//	}
 	
 	/**
 	 * Method to get searched Quizzes from Database
@@ -345,6 +296,38 @@ public class QuizMeController {
 			session.setAttribute("questionsList", questionsList);
 		} catch (Exception exception) {
 //			redirectAttributes.addFlashAttribute("getQuizCatchError", "Error Logging in");
+		}
+		return redirection;
+	}
+	
+	@RequestMapping(value = "/submitQuiz", method = RequestMethod.POST)
+	public  String submitQuiz(Model model, @RequestParam Map<String, String> reqParams, HttpServletRequest request) {
+		int userId = 0;
+		int score = 0;
+		int quizId = 0;
+		String redirection = "redirect:/getTaken";
+		String comment = request.getParameter("comment");
+		System.out.println(comment);
+		try {
+			session = request.getSession();
+			userId = ((Integer) session.getAttribute("userId")).intValue();
+			ArrayList<QuestionModel> questionsList = (ArrayList<QuestionModel>) session.getAttribute("questionsList");
+			Iterator itr = reqParams.entrySet().iterator();
+		    while (itr.hasNext()) {
+		        Map.Entry pair = (Map.Entry)itr.next();
+		        if((String) pair.getKey() != null && !"comment".equalsIgnoreCase((String) pair.getKey())) {
+		        	for(QuestionModel questionModel : questionsList) {
+			        	quizId = questionModel.getQuizId();
+				    	if(questionModel.getQuestionId() == Integer.valueOf((String) pair.getKey()).intValue() 
+				    			&& questionModel.getCorrectAnswer().equalsIgnoreCase((String) pair.getValue())) {
+				    		score++;
+				    		break;
+				    	}
+				    }
+		        }
+		    }
+		} catch (Exception exception) {
+			System.out.println("Some Error...");
 		}
 		return redirection;
 	}
