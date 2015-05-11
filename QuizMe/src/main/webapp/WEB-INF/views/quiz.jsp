@@ -7,40 +7,47 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>Create Quiz</title>
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!-- 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
 		 <script type="text/javascript">
-			function getQuiz() {
-				var formData=$("#quizFormId").serialize();
+// 			function getQuiz() {
+// 				var formData=$("#quizFormId").serialize();
 				
-				/* jQuery.get("viewOrderEventList.html?screenName=update", function( data ) {
-					  $(".middleframe_container").html( data );
-					}); */
+// 				/* jQuery.get("viewOrderEventList.html?screenName=update", function( data ) {
+// 					  $(".middleframe_container").html( data );
+// 					}); */
 				
-				$.ajax({
-					type:"POST",
-					data:formData,
-					 dataType:"json",
-					url:'/quizme/getQuizList',
-					success:function(data,status){
+// 				$.ajax({
+// 					type:"POST",
+// 					data:formData,
+// 					 dataType:"json",
+// 					url:'/quizme/getQuizList',
+// 					success:function(data,status){
 						
-						$("#quizList").html(data);
-					},
-					complete: function (xhr, status) {
-					    if (status === 'error' || !xhr.responseText) {
-					        handleError();
-					    }
-					    else {
-					        var data = xhr.responseText;
-					        $("#quizList").html(data);
-					        //...
-					    }
-					},
-				error:function(data,status){
+// 						$("#quizList").html(data);
+// 					},
+// 					complete: function (xhr, status) {
+// 					    if (status === 'error' || !xhr.responseText) {
+// 					        handleError();
+// 					    }
+// 					    else {
+// 					        var data = xhr.responseText;
+// 					        $("#quizList").html(data);
+// 					        //...
+// 					    }
+// 					},
+// 				error:function(data,status){
 					
-					$("#quizList").html(data);
-				}
-				});
-			}		
+// 					$("#quizList").html(data);
+// 				}
+// 				});
+// 			}		
+
+			function getQuiz() {
+				var quizForm = document.forms['quizFormId'];
+				quizForm.method = "post";
+				quizForm.action = "getQuizList";
+				quizForm.submit();
+			}
 			
 			function takeQuiz() {
 				var quizForm = document.forms['quizFormId'];
@@ -89,9 +96,47 @@
 						</table>
 						<button type="button" class="btn btn-sm btn-primary" onclick="javascript: getQuiz();">Search</button>
 					</div>
-					<div id="quizList">
 					
-					</div>
+					<c:if test="${ quizMap ne null && !quizMap.isEmpty()}">
+						<div class="panel-body">
+							<div class="table-responsive" style="overflow-y: auto; height: 200px;">
+								<table class="table table-striped table-bordered table-hover" id="dataTables-example">
+									<thead>
+						                  <tr style="background-color: #404040; color: #F8F8F8;">
+						                      <th colspan="2">Quiz List</th>
+						                  </tr>
+									</thead>
+									<tbody>
+										<c:choose>
+											<c:when test="${quizMap ne null && not empty quizMap }">
+												<tr>
+													<th>Quiz Id</th>
+													<th>Quiz Name</th>
+												</tr>
+												<c:forEach items="${quizList}" var="entry">
+													<tr>
+													    <td><form:radiobutton path="selectedQuizId" value="${entry.key}" /></td>
+													    <td>${entry.value}</td>
+												   	</tr>
+												</c:forEach>
+											</c:when>
+											<c:otherwise>
+												<tr><td>No Quiz Found</td></tr>
+											</c:otherwise>
+										</c:choose>
+										
+										<c:if test="${quizMap ne null && not empty quizMap }">
+											<button type="button" class="btn btn-sm btn-warning" onclick="javascript: takeQuiz();">Take Quiz</button>
+										</c:if>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</c:if>
+					
+<!-- 					<div id="quizList"> -->
+					
+<!-- 					</div> -->
 					
 				</div>
 	    	</div>

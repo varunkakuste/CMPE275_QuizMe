@@ -160,15 +160,39 @@ public class QuizMeController {
 		return "redirect:/createNewQuiz";
 	}
 	
+//	@RequestMapping(value = "/getQuiz", method = RequestMethod.GET)
+//	public  String getQuiz(HttpServletRequest request, Model model){
+//		QuizModel quizModel = null;
+//		try {
+//			session = request.getSession();
+//			quizModel = (QuizModel) session.getAttribute("quizForm");
+//			if(quizModel == null) {
+////				categoryList = quizMeService.getCategories();
+////				difficultyList = quizMeService.getDifficultyLevels();
+//				categoryList = (List<CategoryModel>) session.getAttribute("categoryList");
+//				difficultyList = (List<DifficultyLevelModel>) session.getAttribute("difficultyList");
+//				
+//				quizModel = new QuizModel();
+//				quizModel.setCategoryModelList(categoryList);
+//				quizModel.setDifficultyLevelModelList(difficultyList);
+//				
+//				session.setAttribute("quizForm", quizModel);
+//			}
+//			model.addAttribute("quizForm", quizModel);
+//		} catch (Exception exception) {
+//			System.out.println("Some Exception...");
+//		}
+//		return "quiz";
+//	}
+	
 	@RequestMapping(value = "/getQuiz", method = RequestMethod.GET)
-	public  String getQuiz(HttpServletRequest request, Model model){
+	public  String getQuiz(Model model, @ModelAttribute("quizMap") HashMap<Integer, String> quizMap, @ModelAttribute("getQuizCatchError") String error, HttpServletRequest request){
 		QuizModel quizModel = null;
+		String redirection = "quiz";
 		try {
 			session = request.getSession();
 			quizModel = (QuizModel) session.getAttribute("quizForm");
 			if(quizModel == null) {
-//				categoryList = quizMeService.getCategories();
-//				difficultyList = quizMeService.getDifficultyLevels();
 				categoryList = (List<CategoryModel>) session.getAttribute("categoryList");
 				difficultyList = (List<DifficultyLevelModel>) session.getAttribute("difficultyList");
 				
@@ -179,10 +203,13 @@ public class QuizMeController {
 				session.setAttribute("quizForm", quizModel);
 			}
 			model.addAttribute("quizForm", quizModel);
+			model.addAttribute("quizList", quizMap);
+			model.addAttribute("getQuizCatchError", error);
 		} catch (Exception exception) {
-			System.out.println("Some Exception...");
+			model.addAttribute("getQuizCatchError", "Error Logging in");
+			redirection = "quiz";
 		}
-		return "quiz";
+		return redirection;
 	}
 	
 //	@RequestMapping(value = "/getQuizList", method = RequestMethod.POST)
@@ -236,9 +263,10 @@ public class QuizMeController {
 				quiz.setQuizName(quizModelAttribute.getQuizName());
 			}
 			quizMap = quizMeService.getQuiz(quiz, userId);
-//			redirectAttributes.addFlashAttribute("quizList", quizMap);
-			model.addAttribute("quizMap", quizMap);
-			redirection = "quizList";
+			redirectAttributes.addFlashAttribute("quizMap", quizMap);
+			redirectAttributes.addFlashAttribute("quizForm", quizModelAttribute);
+//			model.addAttribute("quizMap", quizMap);
+//			model.addAttribute("quizForm", quizModelAttribute);
 		} catch (Exception exception) {
 			redirectAttributes.addFlashAttribute("getQuizCatchError", "Error Logging in");
 		}
@@ -272,5 +300,23 @@ public class QuizMeController {
 		return "takenList";
 	}
 	
-	
+	/**
+	 * Method to get questions for a Quiz
+	 */
+	@RequestMapping(value = "/takeQuiz", method = RequestMethod.POST)
+	public String takeQuiz(Model model, @ModelAttribute("quizForm") QuizModel quizModelAttribute, HttpServletRequest request, final RedirectAttributes redirectAttributes) {
+//		int userId = 0;
+//		QuizModel quiz = null; 
+		ArrayList<QuestionModel> questionsList = null;
+		String redirection = "takeQuiz";
+		try {
+			questionsList = quizMeService.getQuestionsForQuiz(quizModelAttribute.getSelectedQuizId());
+			model.addAttribute("questionsList", questionsList);
+			session = request.getSession();
+			session.setAttribute("questionsList", questionsList);
+		} catch (Exception exception) {
+//			redirectAttributes.addFlashAttribute("getQuizCatchError", "Error Logging in");
+		}
+		return redirection;
+	}
 }

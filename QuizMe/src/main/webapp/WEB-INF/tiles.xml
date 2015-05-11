@@ -60,4 +60,8 @@
     <definition name="takenList" extends="base.definition"> 
        <put-attribute name="body" value="/WEB-INF/views/takenList.jsp" />  
     </definition>
+    
+    <definition name="takeQuiz" extends="base.definition"> 
+       <put-attribute name="body" value="/WEB-INF/views/takeQuiz.jsp" />  
+    </definition>
 </tiles-definitions>  
