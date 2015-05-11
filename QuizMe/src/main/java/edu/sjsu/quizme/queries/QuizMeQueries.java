@@ -37,6 +37,6 @@ public class QuizMeQueries {
 	
 	public static final String GET_QUESTIONS_FOR_QUIZ = "SELECT * FROM QUESTIONS_MASTER WHERE QUIZ_ID = ?";
 	
-	public static final String INSERT_QUIZ_TAKEN = "INSERT INTO QUIZ_TAKEN(QUIZ_ID, USER_ID, SCORE) VALUES(?, ?, ?)";
+	public static final String INSERT_QUIZ_TAKEN = "INSERT INTO QUIZ_TAKEN(QUIZ_ID, USER_ID, SCORE, COMMENT) VALUES(?, ?, ?, ?)";
 	
 }

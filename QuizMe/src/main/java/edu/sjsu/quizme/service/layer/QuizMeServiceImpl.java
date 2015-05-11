@@ -116,7 +116,7 @@ public class QuizMeServiceImpl implements IQuizMeService {
 	}
 	
 	@Override
-	public void insertQuizTaken(int quizId, int userId, int score) throws Exception {
-		quizMeDao.insertQuizTaken(quizId, userId, score);		
+	public void insertQuizTaken(int quizId, int userId, int score, String comment) throws Exception {
+		quizMeDao.insertQuizTaken(quizId, userId, score, comment);		
 	}
 }

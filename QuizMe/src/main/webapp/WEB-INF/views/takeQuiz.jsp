@@ -12,7 +12,6 @@
 		 <script type="text/javascript">
 		 	var answersArray;
 			function submitQuiz() {
-				alert("1");
 				var quizForm = document.forms['questionsListId'];
 				quizForm.method = "post";
 				quizForm.action = "submitQuiz";

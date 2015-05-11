@@ -27,5 +27,5 @@ public interface IQuizMeDao {
 	public HashMap<Integer, String> getQuiz(QuizModel quiz, int userId) throws Exception;
 	public ArrayList<QuizModel> getTakenQuiz(int userId) throws Exception;
 	public ArrayList<QuestionModel> getQuestionsForQuiz(int quizId) throws Exception;
-	public void insertQuizTaken(int quizId, int userId, int score) throws Exception;
+	public void insertQuizTaken(int quizId, int userId, int score, String comment) throws Exception;
 }

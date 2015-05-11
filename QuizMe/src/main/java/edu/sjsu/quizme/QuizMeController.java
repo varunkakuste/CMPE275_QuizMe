@@ -285,8 +285,6 @@ public class QuizMeController {
 	 */
 	@RequestMapping(value = "/takeQuiz", method = RequestMethod.POST)
 	public String takeQuiz(Model model, @ModelAttribute("quizForm") QuizModel quizModelAttribute, HttpServletRequest request, final RedirectAttributes redirectAttributes) {
-//		int userId = 0;
-//		QuizModel quiz = null; 
 		ArrayList<QuestionModel> questionsList = null;
 		String redirection = "takeQuiz";
 		try {
@@ -309,6 +307,7 @@ public class QuizMeController {
 		int score = 0;
 		int quizId = 0;
 		String redirection = "redirect:/getTaken";
+		String comment = request.getParameter("comment");
 		try {
 			session = request.getSession();
 			userId = ((Integer) session.getAttribute("userId")).intValue();
@@ -327,7 +326,7 @@ public class QuizMeController {
 				    }
 		        }
 		    }
-		    quizMeService.insertQuizTaken(quizId, userId, score);
+		    quizMeService.insertQuizTaken(quizId, userId, score, comment);
 		} catch (Exception exception) {
 			System.out.println("Some Error...");
 //			redirectAttributes.addFlashAttribute("getQuizCatchError", "Error Logging in");

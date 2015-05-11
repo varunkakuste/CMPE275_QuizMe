@@ -442,7 +442,7 @@ public class QuizMeDaoImpl implements IQuizMeDao {
 	 * Method to insert taken quiz details in database
 	 */
 	@Override
-	public void insertQuizTaken(int quizId, int userId, int score) throws Exception {
+	public void insertQuizTaken(int quizId, int userId, int score, String comment) throws Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		try {
@@ -451,6 +451,7 @@ public class QuizMeDaoImpl implements IQuizMeDao {
 			preparedStatement.setInt(1, quizId);
 			preparedStatement.setInt(2, userId);
 			preparedStatement.setInt(3, score);
+			preparedStatement.setString(4, comment);
 			
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
