@@ -114,4 +114,9 @@ public class QuizMeServiceImpl implements IQuizMeService {
 	public ArrayList<QuestionModel> getQuestionsForQuiz(int quizId) throws Exception {
 		return quizMeDao.getQuestionsForQuiz(quizId);
 	}
+	
+	@Override
+	public void insertQuizTaken(int quizId, int userId, int score) throws Exception {
+		quizMeDao.insertQuizTaken(quizId, userId, score);		
+	}
 }
