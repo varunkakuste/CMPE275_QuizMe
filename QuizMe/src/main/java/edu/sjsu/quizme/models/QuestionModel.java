@@ -45,6 +45,11 @@ public class QuestionModel {
 	private int questionId;
 	
 	/**
+	 * quizId
+	 */
+	private int quizId;
+	
+	/**
 	 * @return the question
 	 */
 	public String getQuestion() {
@@ -127,6 +132,18 @@ public class QuestionModel {
 	 */
 	public void setQuestionId(int questionId) {
 		this.questionId = questionId;
+	}
+	/**
+	 * @return the quizId
+	 */
+	public int getQuizId() {
+		return quizId;
+	}
+	/**
+	 * @param quizId the quizId to set
+	 */
+	public void setQuizId(int quizId) {
+		this.quizId = quizId;
 	}
 	
 }

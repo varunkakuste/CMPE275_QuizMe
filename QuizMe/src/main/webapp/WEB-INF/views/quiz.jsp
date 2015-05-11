@@ -42,6 +42,12 @@
 				});
 			}		
 			
+			function takeQuiz() {
+				var quizForm = document.forms['quizFormId'];
+				quizForm.method = "post";
+				quizForm.action = "takeQuiz";
+				quizForm.submit();
+			}
 		</script> 
 	</head>
 	<body>

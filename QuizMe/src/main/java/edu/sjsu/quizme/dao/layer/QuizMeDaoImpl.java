@@ -394,4 +394,47 @@ public class QuizMeDaoImpl implements IQuizMeDao {
 		System.out.println(quizList);
 		return quizList;
 	}
+	
+	/**
+	 * Method to get questions for a Quiz
+	 */
+	@Override
+	public ArrayList<QuestionModel> getQuestionsForQuiz(int quizId) throws Exception {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		QuestionModel question = null;		
+		ArrayList<QuestionModel> questionsList = new ArrayList<QuestionModel>();
+		try {
+			connection = (Connection) dataSource.getConnection();
+			preparedStatement = (PreparedStatement) connection.prepareStatement(QuizMeQueries.GET_QUESTIONS_FOR_QUIZ);
+			preparedStatement.setInt(1, quizId);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				question = new QuestionModel();
+				question.setQuestionId(resultSet.getInt("QUESTIONS_ID"));
+				question.setQuizId(resultSet.getInt("QUIZ_ID"));
+				question.setQuestion(resultSet.getString("QUESTION"));
+				question.setOptionA(resultSet.getString("OPTION_A"));
+				question.setOptionB(resultSet.getString("OPTION_B"));
+				question.setOptionC(resultSet.getString("OPTION_C"));
+				question.setOptionD(resultSet.getString("OPTION_D"));
+				question.setCorrectAnswer(resultSet.getString("CORRECT_ANSWER"));
+				questionsList.add(question);
+			}
+		} catch (SQLException sql) {
+			throw new Exception(sql);
+		} catch (Exception exp){
+			throw new Exception(exp);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sql) {
+					throw new Exception(sql);
+				}
+			}
+		}
+		return questionsList;
+	}
 }

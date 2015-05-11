@@ -26,4 +26,5 @@ public interface IQuizMeDao {
 //	public ArrayList<String> getQuiz(QuizModel quiz, int userId) throws Exception;
 	public HashMap<Integer, String> getQuiz(QuizModel quiz, int userId) throws Exception;
 	public ArrayList<QuizModel> getTakenQuiz(int userId) throws Exception;
+	public ArrayList<QuestionModel> getQuestionsForQuiz(int quizId) throws Exception;
 }

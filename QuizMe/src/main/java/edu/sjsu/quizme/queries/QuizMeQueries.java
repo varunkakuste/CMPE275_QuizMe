@@ -35,4 +35,6 @@ public class QuizMeQueries {
 			+ "ON Q.QUIZ_ID= T.QUIZ_ID "
 			+ "WHERE T.USER_ID=?";
 	
+	public static final String GET_QUESTIONS_FOR_QUIZ = "SELECT * FROM QUESTIONS_MASTER WHERE QUIZ_ID = ?";
+	
 }
