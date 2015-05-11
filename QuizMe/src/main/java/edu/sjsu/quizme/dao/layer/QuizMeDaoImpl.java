@@ -437,4 +437,35 @@ public class QuizMeDaoImpl implements IQuizMeDao {
 		}
 		return questionsList;
 	}
+	
+	/**
+	 * Method to insert taken quiz details in database
+	 */
+	@Override
+	public void insertQuizTaken(int quizId, int userId, int score) throws Exception {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		try {
+			connection = dataSource.getConnection();
+			preparedStatement = connection.prepareStatement(QuizMeQueries.INSERT_QUIZ_TAKEN);
+			preparedStatement.setInt(1, quizId);
+			preparedStatement.setInt(2, userId);
+			preparedStatement.setInt(3, score);
+			
+			preparedStatement.executeUpdate();
+			preparedStatement.close();
+		} catch (SQLException sql) {
+			throw new Exception(sql);
+		} catch (Exception exp){
+			throw new Exception(exp);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sql) {
+					throw new Exception(sql);
+				}
+			}
+		}
+	}
 }
