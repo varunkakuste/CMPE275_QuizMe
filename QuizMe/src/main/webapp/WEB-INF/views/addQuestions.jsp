@@ -24,13 +24,33 @@
 		    	<div class="panel-heading">
 		        	<h3 class="panel-title">Add a Question</h3>
 		        </div>
+		        <c:if test="${optionsError ne null && not empty optionsError}">
+					<div class="alert alert-danger" role="alert">
+						<div align="center">
+							<strong style="color: red;">
+								<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+								Please give at least one option choice for the question
+							</strong>
+						</div>
+					</div>
+				</c:if>
+				<c:if test="${addQuestionError ne null && not empty addQuestionError}">
+					<div class="alert alert-danger" role="alert">
+						<div align="center">
+							<strong style="color: red;">
+								<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+								Error adding Question...
+							</strong>
+						</div>
+					</div>
+				</c:if>
 		        <div class="panel-body">
 					<div class="table-responsive" style="overflow-y: auto; height: 375px;">
 						<table class="table table-striped table-bordered table-hover" id="dataTables-example">
 							<tbody>
 								<tr>
 									<td>Enter Question: </td>
-									<td><form:input path="question" /></td>
+									<td><form:input path="question" /> <label style="color: red;"><form:errors path="question" element="div" /></label></td>
 								</tr>
 								<tr>
 									<td>Enter Option A: </td>
@@ -50,7 +70,7 @@
 								</tr>
 								<tr>
 									<td>Correct Answer: </td>
-									<td><form:input path="correctAnswer" /></td>
+									<td><form:input path="correctAnswer" /> <label style="color: red;"><form:errors path="correctAnswer" element="div" /></label></td>
 								</tr>
 							</tbody>
 						</table>

@@ -3,6 +3,11 @@
  */
 package edu.sjsu.quizme.models;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 /**
  * @author Varun
  *
@@ -12,6 +17,7 @@ public class QuestionModel {
 	/**
 	 * question
 	 */
+	@NotEmpty @NotNull @Size(min=2, max=100)
 	private String question;
 	
 	/**
@@ -37,17 +43,17 @@ public class QuestionModel {
 	/**
 	 * correctAnswer
 	 */
+	@NotEmpty @NotNull @Size(min=1, max=1)
 	private String correctAnswer;
+	
+	private int quizId;
+	
+	private String usersAnswer;
 	
 	/**
 	 * questionId
 	 */
 	private int questionId;
-	
-	/**
-	 * quizId
-	 */
-	private int quizId;
 	
 	/**
 	 * @return the question
@@ -144,6 +150,18 @@ public class QuestionModel {
 	 */
 	public void setQuizId(int quizId) {
 		this.quizId = quizId;
+	}
+	/**
+	 * @return the usersAnswer
+	 */
+	public String getUsersAnswer() {
+		return usersAnswer;
+	}
+	/**
+	 * @param usersAnswer the usersAnswer to set
+	 */
+	public void setUsersAnswer(String usersAnswer) {
+		this.usersAnswer = usersAnswer;
 	}
 	
 }

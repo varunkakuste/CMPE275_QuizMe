@@ -10,12 +10,14 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -71,7 +73,7 @@ public class QuizMeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/createNewQuiz", method = RequestMethod.GET)
-	public String createQuiz(Model model, HttpServletRequest request) {
+	public String createQuiz(Model model, @ModelAttribute("noQuizNameError") String noQuizNameError, HttpServletRequest request) {
 		logger.info("Class: QuizMeController <-> Method: createQuiz() Start");
 		QuizModel quizModel = null;
 		try {
@@ -87,7 +89,13 @@ public class QuizMeController {
 				
 				session.setAttribute("quizForm", quizModel);
 			}
+			
+			if(quizModel != null && quizModel.getQuestionsList() != null && quizModel.getQuestionsList().size() >= 5) {
+				model.addAttribute("enableCreateQuizButton", "enable Create Quiz Button");
+			}
+			
 			model.addAttribute("quizForm", quizModel);
+			model.addAttribute("noQuizNameError", noQuizNameError);
 		} catch (Exception exception) {
 			System.out.println("Some Exception...");
 		}
@@ -99,65 +107,86 @@ public class QuizMeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/proceedToQuestion", method = RequestMethod.GET)
-	public String proceedToQuestion(@ModelAttribute("quizForm") QuizModel quizModelAttribute, @ModelAttribute("questionForm") QuestionModel questionModel, Model model, HttpServletRequest request) {
+	public String proceedToQuestion(Model model, @ModelAttribute("quizForm") QuizModel quizModelAttribute, 
+			@ModelAttribute("questionForm") QuestionModel questionModel, HttpServletRequest request,
+			final RedirectAttributes redirectAttributes) {
 		logger.info("Class: QuizMeController <-> Method: proceedToQuestion() Start");
+		String redirection = "addQuestions";
 		session = request.getSession();
 		QuizModel quizModel = (QuizModel) session.getAttribute("quizForm");
-		if(quizModel != null && quizModel.getCategory() == 0 && quizModel.getDifficultyLevel() == 0 
+		if(quizModel != null && quizModelAttribute.getQuizName() != null && !"".equalsIgnoreCase(quizModelAttribute.getQuizName())) {
+			if(quizModel.getCategory() == 0 && quizModel.getDifficultyLevel() == 0 
 				&& (quizModel.getQuestionsList() == null || quizModel.getQuestionsList().isEmpty())) {
-			quizModelAttribute.setCategoryModelList(categoryList);
-			quizModelAttribute.setDifficultyLevelModelList(difficultyList);
-			session.setAttribute("quizForm", quizModelAttribute);
+				quizModelAttribute.setCategoryModelList(categoryList);
+				quizModelAttribute.setDifficultyLevelModelList(difficultyList);
+				session.setAttribute("quizForm", quizModelAttribute);
+			}
+		} else {
+			redirection = "redirect:/createNewQuiz";
+			redirectAttributes.addFlashAttribute("noQuizNameError", "enter quiz name");
 		}
 		model.addAttribute("questionForm", questionModel);
 		logger.info("Class: QuizMeController <-> Method: proceedToQuestion() End");
-		return "addQuestions";
+		return redirection;
 	}
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/addQuestion", method = RequestMethod.POST)
-	public String addQuestion(@ModelAttribute("questionForm") QuestionModel questionModel, Model model, HttpServletRequest request) {
+	public String addQuestion(Model model, @ModelAttribute("questionForm") @Valid QuestionModel questionModel, BindingResult bindingResult, HttpServletRequest request) {
 		logger.info("Class: QuizMeController <-> Method: addQuestion() Start");
-		session = request.getSession();
-		QuizModel quizModel = (QuizModel) session.getAttribute("quizForm");
-		if(quizModel != null) {
-			if(quizModel.getQuestionsList() != null && !quizModel.getQuestionsList().isEmpty()) {
-				quizModel.getQuestionsList().add(questionModel);
-			} else {
-				List<QuestionModel> questionsList = new ArrayList<QuestionModel>();
-				questionsList.add(questionModel);
-				quizModel.setQuestionsList(questionsList);
+		String redirection = "addQuestions";
+		try {
+			if (!bindingResult.hasErrors()) {
+				session = request.getSession();
+				QuizModel quizModel = (QuizModel) session.getAttribute("quizForm");
+				
+				if(chkIsNull(questionModel.getOptionA()) || chkIsNull(questionModel.getOptionB()) 
+					|| chkIsNull(questionModel.getOptionC()) || chkIsNull(questionModel.getOptionD())) {
+					if(quizModel != null) {
+						if(quizModel.getQuestionsList() != null && !quizModel.getQuestionsList().isEmpty()) {
+							quizModel.getQuestionsList().add(questionModel);
+						} else {
+							List<QuestionModel> questionsList = new ArrayList<QuestionModel>();
+							questionsList.add(questionModel);
+							quizModel.setQuestionsList(questionsList);
+						}
+					} else {
+						quizModel = new QuizModel();
+					}
+					redirection = "redirect:/createNewQuiz";
+				} else {
+					model.addAttribute("optionsError", "Please Give atleast one option");
+				}
+				session.setAttribute("quizForm", quizModel);
+				model.addAttribute("quizForm", quizModel);
 			}
-		} else {
-			quizModel = new QuizModel();
+		} catch (Exception exception) {
+			model.addAttribute("addQuestionError", "Error adding question");
 		}
-		session.setAttribute("quizForm", quizModel);
-		model.addAttribute("quizForm", quizModel);
 		logger.info("Class: QuizMeController <-> Method: addQuestion() End");
-		return "redirect:/createNewQuiz";
+		return redirection;
 	}
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/createQuiz", method = RequestMethod.POST)
-	public String createNewQuiz(Model model, HttpServletRequest request) {
+	public String createNewQuiz(Model model, HttpServletRequest request, final RedirectAttributes redirectAttributes) {
 		logger.info("Class: QuizMeController <-> Method: addQuestion() Start");
+		String redirection = "redirect:/getTaken";
 		try {
 			session = request.getSession();
 			QuizModel quizModel = (QuizModel) session.getAttribute("quizForm");
-			if(quizModel != null && quizModel.getQuestionsList() != null && quizModel.getQuestionsList().size() >= 5) {
-				quizMeService.createQuiz(quizModel);
-			} else {
-				System.out.println("ERROR: Please add atleast 5 questions to the quiz");
-			}
+			quizMeService.createQuiz(quizModel);
+			redirectAttributes.addFlashAttribute("quizCreatedMessage", "User signedup successfully");
 		} catch (Exception exception) {
-			System.out.println("Some Exception...");
+			model.addAttribute("createQuizCatchError", "Error Logging in");
+			redirection = "createQuiz";
 		}
 		logger.info("Class: QuizMeController <-> Method: addQuestion() End");
-		return "redirect:/createNewQuiz";
+		return redirection;
 	}
 	
 //	@RequestMapping(value = "/getQuiz", method = RequestMethod.GET)
@@ -318,5 +347,19 @@ public class QuizMeController {
 //			redirectAttributes.addFlashAttribute("getQuizCatchError", "Error Logging in");
 		}
 		return redirection;
+	}
+	
+	/**
+	 * Method is to check if the String is empty or NULL
+	 * 
+	 * @param str
+	 * @return boolean
+	 */
+	public boolean chkIsNull(String str) {
+		boolean result = false;
+		if (null != str && !"".equalsIgnoreCase(str)) {
+			result = true;
+		}
+		return result;
 	}
 }

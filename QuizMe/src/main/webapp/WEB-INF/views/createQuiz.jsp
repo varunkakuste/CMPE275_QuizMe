@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 		<title>Create Quiz</title>
 		<script type="text/javascript">
 			function proceedToQuestion() {
@@ -24,11 +24,41 @@
 		</script>
 	</head>
 	<body>
-		<form:form id="quizFormId" modelAttribute="quizForm">
+		<form:form id="quizFormId" name="quizFormId" modelAttribute="quizForm">
 			<div class="panel panel-primary">
 		    	<div class="panel-heading">
 		        	<h3 class="panel-title">Create Quiz</h3>
 		        </div>
+		        <c:if test="${createQuizError ne null && not empty createQuizError}">
+					<div class="alert alert-danger" role="alert">
+						<div align="center">
+							<strong style="color: red;">
+								<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+								Please add at least 5 questions to the quiz...
+							</strong>
+						</div>
+					</div>
+				</c:if>
+				<c:if test="${createQuizCatchError ne null && not empty createQuizCatchError}">
+					<div class="alert alert-danger" role="alert">
+						<div align="center">
+							<strong style="color: red;">
+								<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+								Error while creating a Quiz...
+							</strong>
+						</div>
+					</div>
+				</c:if>
+				<c:if test="${noQuizNameError ne null && not empty noQuizNameError}">
+					<div class="alert alert-danger" role="alert">
+						<div align="center">
+							<strong style="color: red;">
+								<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+								Please Enter Quiz Name...
+							</strong>
+						</div>
+					</div>
+				</c:if>
 		        <div class="panel-body">
 					<div class="table-responsive" style="overflow-y: auto; height: 375px;">
 						<table class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -101,7 +131,14 @@
 							</tbody>
 						</table>
 						<button type="button" class="btn btn-sm btn-primary" onclick="javascript: proceedToQuestion();">Add Question</button>
-						<button type="button" class="btn btn-sm btn-warning" onclick="javascript: createQuiz();">Create Quiz</button>
+						<c:choose>
+							<c:when test="${ enableCreateQuizButton ne null && not empty enableCreateQuizButton }">
+								<button type="button" class="btn btn-sm btn-warning" onclick="javascript: createQuiz();">Create Quiz</button>
+							</c:when>
+							<c:otherwise>
+								<button type="button" class="btn btn-sm btn-warning" disabled="disabled">Create Quiz</button>
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 	    	</div>
