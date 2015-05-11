@@ -345,6 +345,21 @@ public class QuizMeController {
 	}
 	
 	/**
+	 * Method to get user's dashboard Quiz in Database
+	 */
+	@RequestMapping(value = "/getGlobalDashboard", method = RequestMethod.GET)
+	public  String getGlobalDashboard(ModelMap modelMap) {
+		List<GlobalDashboardModel> globalDashBoardList = null;
+		try {
+			globalDashBoardList = quizMeService.getGlobalDashboard();
+			modelMap.addAttribute("globalDashBoardList", globalDashBoardList);
+		} catch (Exception exception) {
+			System.out.println("Some Exception...");
+		}
+		return "getGlobalDashboard";
+	}
+	
+	/**
 	 * Method is to check if the String is empty or NULL
 	 * 
 	 * @param str
