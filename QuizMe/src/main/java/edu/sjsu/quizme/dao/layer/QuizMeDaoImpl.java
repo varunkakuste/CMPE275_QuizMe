@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import edu.sjsu.quizme.models.CategoryModel;
 import edu.sjsu.quizme.models.DifficultyLevelModel;
+import edu.sjsu.quizme.models.GlobalDashboardModel;
 import edu.sjsu.quizme.models.QuestionModel;
 import edu.sjsu.quizme.models.QuizModel;
 import edu.sjsu.quizme.queries.QuizMeQueries;
@@ -468,5 +469,44 @@ public class QuizMeDaoImpl implements IQuizMeDao {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Method to get Global Dashboard
+	 * @throws Exception 
+	 */
+	@Override
+	public List<GlobalDashboardModel> getGlobalDashboard() throws Exception {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		GlobalDashboardModel globalDashboardModel = null;
+		List<GlobalDashboardModel> globalDashboardList = new ArrayList<GlobalDashboardModel>();
+		try {
+			connection = dataSource.getConnection();
+			preparedStatement = connection.prepareStatement(QuizMeQueries.GET_GLOBAL_DASHBOARD_QUERY);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				globalDashboardModel = new GlobalDashboardModel();
+				globalDashboardModel.setUserName(resultSet.getString("USERNAME"));
+				globalDashboardModel.setQuizName(resultSet.getString("QUIZ_NAME"));
+				globalDashboardModel.setQuizCount(resultSet.getInt("QUIZ_COUNT"));
+				globalDashboardModel.setMaxScore(resultSet.getInt("MAX_SCORE"));
+				globalDashboardList.add(globalDashboardModel);
+			}
+		} catch (SQLException sql) {
+			throw new Exception(sql);
+		} catch (Exception exp){
+			throw new Exception(exp);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sql) {
+					throw new Exception(sql);
+				}
+			}
+		}
+		return globalDashboardList;
 	}
 }

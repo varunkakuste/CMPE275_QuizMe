@@ -9,6 +9,7 @@ import java.util.List;
 
 import edu.sjsu.quizme.models.CategoryModel;
 import edu.sjsu.quizme.models.DifficultyLevelModel;
+import edu.sjsu.quizme.models.GlobalDashboardModel;
 import edu.sjsu.quizme.models.QuestionModel;
 import edu.sjsu.quizme.models.QuizModel;
 

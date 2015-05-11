@@ -9,6 +9,7 @@ import java.util.List;
 
 import edu.sjsu.quizme.models.CategoryModel;
 import edu.sjsu.quizme.models.DifficultyLevelModel;
+import edu.sjsu.quizme.models.GlobalDashboardModel;
 import edu.sjsu.quizme.models.QuestionModel;
 import edu.sjsu.quizme.models.QuizModel;
 
@@ -28,4 +29,5 @@ public interface IQuizMeDao {
 	public ArrayList<QuizModel> getTakenQuiz(int userId) throws Exception;
 	public ArrayList<QuestionModel> getQuestionsForQuiz(int quizId) throws Exception;
 	public void insertQuizTaken(int quizId, int userId, int score, String comment) throws Exception;
+	public List<GlobalDashboardModel> getGlobalDashboard() throws Exception;
 }

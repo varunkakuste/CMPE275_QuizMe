@@ -13,6 +13,14 @@
 	
 	}
 	
+	function getGlobalDashboard(){
+		var quizForm = document.forms['quizForm'];
+		quizForm.method = "get";
+		quizForm.action = "getGlobalDashboard";
+		quizForm.submit();
+	
+	}
+	
 	function createQuiz() {
 		var quizForm = document.forms['quizForm'];
 		quizForm.method = "get";
@@ -37,6 +45,7 @@
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
 						<li><a href="javascript: getUserDashboard();">User Dashboard</a></li>
+						<li><a href="javascript: getGlobalDashboard();">Global Dashboard</a></li>
 						<li><a href="javascript: createQuiz();">Create Quiz</a></li>
 						<li><a href="javascript: searchQuiz();">Search Quiz</a></li>
 					</ul>

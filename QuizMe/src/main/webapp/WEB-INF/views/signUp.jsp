@@ -29,6 +29,13 @@
 				signUpForm.action = "login";
 				signUpForm.submit();
 			}	
+			
+			function cancelSignUp() {
+				var signUpForm = document.forms['signUpFormId'];
+				signUpForm.method = "get";
+				signUpForm.action = "getTaken";
+				signUpForm.submit();
+			}	
 		</script>
 	</head>
 	<body>
@@ -95,12 +102,13 @@
 						<c:choose>
 							<c:when test="${changeSettings ne null && not empty changeSettings}">
 								<button type="button" class="btn btn-sm btn-primary" onclick="javascript: saveChanges();">Save Changes</button>
+								<button type="button" class="btn btn-sm btn-warning" onclick="javascript: cancelSignUp();">Cancel</button>
 							</c:when>
 							<c:otherwise>
 								<button type="button" class="btn btn-sm btn-primary" onclick="javascript: signUp();">Register</button>
+								<button type="button" class="btn btn-sm btn-warning" onclick="javascript: cancel();">Cancel</button>
 							</c:otherwise>
 						</c:choose>
-						<button type="button" class="btn btn-sm btn-warning" onclick="javascript: cancel();">Cancel</button>
 					</div>
 				</div>
 	    	</div>

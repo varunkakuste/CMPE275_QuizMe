@@ -44,7 +44,7 @@
 						<div align="center">
 							<strong style="color: red;">
 								<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-								Error while creating a Quiz...
+								Error while creating a Quiz...Or Quiz name exist...
 							</strong>
 						</div>
 					</div>

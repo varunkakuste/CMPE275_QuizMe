@@ -97,7 +97,7 @@
 						<button type="button" class="btn btn-sm btn-primary" onclick="javascript: getQuiz();">Search</button>
 					</div>
 					
-					<c:if test="${ quizMap ne null && !quizMap.isEmpty()}">
+					
 						<div class="panel-body">
 							<div class="table-responsive" style="overflow-y: auto; height: 200px;">
 								<table class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -108,34 +108,31 @@
 									</thead>
 									<tbody>
 										<c:choose>
-											<c:when test="${quizMap ne null && not empty quizMap }">
-												<tr>
-													<th>Quiz Id</th>
-													<th>Quiz Name</th>
-												</tr>
-												<c:forEach items="${quizList}" var="entry">
+											<c:when test="${ isQuizFound ne null && not empty isQuizFound }">
+												<c:if test="${ quizMap ne null && not empty quizMap }">
 													<tr>
-													    <td><form:radiobutton path="selectedQuizId" value="${entry.key}" /></td>
-													    <td>${entry.value}</td>
-												   	</tr>
-												</c:forEach>
+														<th>Quiz Id</th>
+														<th>Quiz Name</th>
+													</tr>
+													<c:forEach items="${quizList}" var="entry">
+														<tr>
+														    <td><form:radiobutton path="selectedQuizId" value="${entry.key}" /></td>
+														    <td>${entry.value}</td>
+													   	</tr>
+													</c:forEach>
+													<button type="button" class="btn btn-sm btn-warning" onclick="javascript: takeQuiz();">Take Quiz</button>
+												</c:if>
 											</c:when>
 											<c:otherwise>
-												<tr><td>No Quiz Found</td></tr>
+												<tr><td colspan="2">No Quizzes to list</td></tr>
 											</c:otherwise>
 										</c:choose>
-										
-										<c:if test="${quizMap ne null && not empty quizMap }">
-											<button type="button" class="btn btn-sm btn-warning" onclick="javascript: takeQuiz();">Take Quiz</button>
-										</c:if>
 									</tbody>
 								</table>
 							</div>
 						</div>
-					</c:if>
 					
 <!-- 					<div id="quizList"> -->
-					
 <!-- 					</div> -->
 					
 				</div>

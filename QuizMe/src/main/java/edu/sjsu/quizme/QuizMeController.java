@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.sjsu.quizme.models.CategoryModel;
 import edu.sjsu.quizme.models.DifficultyLevelModel;
+import edu.sjsu.quizme.models.GlobalDashboardModel;
 import edu.sjsu.quizme.models.QuestionModel;
 import edu.sjsu.quizme.models.QuizModel;
 import edu.sjsu.quizme.models.UserModel;
@@ -76,7 +78,8 @@ public class QuizMeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/createNewQuiz", method = RequestMethod.GET)
-	public String createQuiz(Model model, @ModelAttribute("noQuizNameError") String noQuizNameError, HttpServletRequest request) {
+	public String createQuiz(Model model, @ModelAttribute("noQuizNameError") String noQuizNameError, 
+			@ModelAttribute("createQuizCatchError") String createQuizCatchError, HttpServletRequest request) {
 		logger.info("Class: QuizMeController <-> Method: createQuiz() Start");
 		QuizModel quizModel = null;
 		try {
@@ -93,12 +96,13 @@ public class QuizMeController {
 				session.setAttribute("quizForm", quizModel);
 			}
 			
-			if(quizModel != null && quizModel.getQuestionsList() != null && quizModel.getQuestionsList().size() >= 5) {
+			if(quizModel != null && quizModel.getQuestionsList() != null && quizModel.getQuestionsList().size() >= 3) {
 				model.addAttribute("enableCreateQuizButton", "enable Create Quiz Button");
 			}
 			
 			model.addAttribute("quizForm", quizModel);
 			model.addAttribute("noQuizNameError", noQuizNameError);
+			model.addAttribute("createQuizCatchError", createQuizCatchError);
 		} catch (Exception exception) {
 			System.out.println("Some Exception...");
 		}
@@ -176,7 +180,7 @@ public class QuizMeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/createQuiz", method = RequestMethod.POST)
-	public String createNewQuiz(Model model, HttpServletRequest request, final RedirectAttributes redirectAttributes) {
+	public String createQuiz(Model model, HttpServletRequest request, final RedirectAttributes redirectAttributes) {
 		logger.info("Class: QuizMeController <-> Method: addQuestion() Start");
 		String redirection = "redirect:/getTaken";
 		try {
@@ -185,8 +189,8 @@ public class QuizMeController {
 			quizMeService.createQuiz(quizModel);
 			redirectAttributes.addFlashAttribute("quizCreatedMessage", "User signedup successfully");
 		} catch (Exception exception) {
-			model.addAttribute("createQuizCatchError", "Error Logging in");
-			redirection = "createQuiz";
+			redirectAttributes.addFlashAttribute("createQuizCatchError", "Error Logging in");
+			redirection = "redirect:/createNewQuiz";
 		}
 		logger.info("Class: QuizMeController <-> Method: addQuestion() End");
 		return redirection;
@@ -210,8 +214,14 @@ public class QuizMeController {
 				session.setAttribute("quizForm", quizModel);
 			}
 			model.addAttribute("quizForm", quizModel);
-			model.addAttribute("quizList", quizMap);
 			model.addAttribute("getQuizCatchError", error);
+			
+			if(quizMap != null && !quizMap.isEmpty()) {
+				model.addAttribute("quizMap", quizMap);
+				model.addAttribute("isQuizFound", "quiz found");
+			} else {
+				model.addAttribute("isQuizFound", null);
+			}
 		} catch (Exception exception) {
 			model.addAttribute("getQuizCatchError", "Error Logging in");
 			redirection = "quiz";
