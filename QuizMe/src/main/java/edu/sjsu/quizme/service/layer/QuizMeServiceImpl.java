@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import edu.sjsu.quizme.dao.layer.IQuizMeDao;
 import edu.sjsu.quizme.models.CategoryModel;
 import edu.sjsu.quizme.models.DifficultyLevelModel;
+import edu.sjsu.quizme.models.QuestionModel;
 import edu.sjsu.quizme.models.QuizModel;
 
 /**
@@ -104,5 +105,13 @@ public class QuizMeServiceImpl implements IQuizMeService {
 	@Override
 	public ArrayList<QuizModel> getTakenQuiz(int userId) throws Exception {
 		return quizMeDao.getTakenQuiz(userId);
+	}
+	
+	/**
+	 * Method to get questions for a Quiz
+	 */
+	@Override
+	public ArrayList<QuestionModel> getQuestionsForQuiz(int quizId) throws Exception {
+		return quizMeDao.getQuestionsForQuiz(quizId);
 	}
 }
