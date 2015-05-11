@@ -27,4 +27,5 @@ public interface IQuizMeService {
 	public ArrayList<QuizModel> getTakenQuiz(int userId) throws Exception;
 	public ArrayList<QuestionModel> getQuestionsForQuiz(int quizId) throws Exception;
 	public void insertQuizTaken(int quizId, int userId, int score, String comment) throws Exception;
+	public List<GlobalDashboardModel> getGlobalDashboard() throws Exception;
 }

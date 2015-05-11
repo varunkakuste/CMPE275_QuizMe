@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import edu.sjsu.quizme.dao.layer.IQuizMeDao;
 import edu.sjsu.quizme.models.CategoryModel;
 import edu.sjsu.quizme.models.DifficultyLevelModel;
+import edu.sjsu.quizme.models.GlobalDashboardModel;
 import edu.sjsu.quizme.models.QuestionModel;
 import edu.sjsu.quizme.models.QuizModel;
 
@@ -107,6 +108,15 @@ public class QuizMeServiceImpl implements IQuizMeService {
 	@Override
 	public void insertQuizTaken(int quizId, int userId, int score, String comment) throws Exception {
 		quizMeDao.insertQuizTaken(quizId, userId, score, comment);		
+	}
+	
+	/**
+	 * Method to get Global Dashboard
+	 * @throws Exception 
+	 */
+	@Override
+	public List<GlobalDashboardModel> getGlobalDashboard() throws Exception {
+		return quizMeDao.getGlobalDashboard();
 	}
 
 }
