@@ -300,14 +300,15 @@ public class QuizMeController {
 		return redirection;
 	}
 	
+	/**
+	 * Method to insert taken quiz details in database
+	 */
 	@RequestMapping(value = "/submitQuiz", method = RequestMethod.POST)
 	public  String submitQuiz(Model model, @RequestParam Map<String, String> reqParams, HttpServletRequest request) {
 		int userId = 0;
 		int score = 0;
 		int quizId = 0;
 		String redirection = "redirect:/getTaken";
-		String comment = request.getParameter("comment");
-		System.out.println(comment);
 		try {
 			session = request.getSession();
 			userId = ((Integer) session.getAttribute("userId")).intValue();
@@ -326,8 +327,10 @@ public class QuizMeController {
 				    }
 		        }
 		    }
+		    quizMeService.insertQuizTaken(quizId, userId, score);
 		} catch (Exception exception) {
 			System.out.println("Some Error...");
+//			redirectAttributes.addFlashAttribute("getQuizCatchError", "Error Logging in");
 		}
 		return redirection;
 	}
