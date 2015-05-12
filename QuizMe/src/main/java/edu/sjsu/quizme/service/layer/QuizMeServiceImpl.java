@@ -119,4 +119,13 @@ public class QuizMeServiceImpl implements IQuizMeService {
 		return quizMeDao.getGlobalDashboard();
 	}
 
+	/**
+	 * Method to get All Quizzes List
+	 * @throws Exception 
+	 */
+	@Override
+	public ArrayList<QuizModel> getAllQuizzes(int userId) throws Exception {
+		return quizMeDao.getAllQuizzes(userId);
+	}
+
 }
