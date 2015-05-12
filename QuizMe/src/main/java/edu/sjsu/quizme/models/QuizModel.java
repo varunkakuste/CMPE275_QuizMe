@@ -60,6 +60,16 @@ public class QuizModel {
 	 * selectedQuizId
 	 */
 	private int selectedQuizId;
+	
+	/**
+	 * categotyStr
+	 */
+	private String categotyStr;
+	
+	/**
+	 * difficultyLevelStr
+	 */
+	private String difficultyLevelStr;
 
 	/**
 	 * @return the quizName
@@ -200,6 +210,34 @@ public class QuizModel {
 	 */
 	public void setSelectedQuizId(int selectedQuizId) {
 		this.selectedQuizId = selectedQuizId;
+	}
+
+	/**
+	 * @return the categotyStr
+	 */
+	public String getCategotyStr() {
+		return categotyStr;
+	}
+
+	/**
+	 * @param categotyStr the categotyStr to set
+	 */
+	public void setCategotyStr(String categotyStr) {
+		this.categotyStr = categotyStr;
+	}
+
+	/**
+	 * @return the difficultyLevelStr
+	 */
+	public String getDifficultyLevelStr() {
+		return difficultyLevelStr;
+	}
+
+	/**
+	 * @param difficultyLevelStr the difficultyLevelStr to set
+	 */
+	public void setDifficultyLevelStr(String difficultyLevelStr) {
+		this.difficultyLevelStr = difficultyLevelStr;
 	}
 
 }

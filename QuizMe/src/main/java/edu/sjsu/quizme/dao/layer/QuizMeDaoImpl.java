@@ -509,4 +509,44 @@ public class QuizMeDaoImpl implements IQuizMeDao {
 		}
 		return globalDashboardList;
 	}
+	
+	/**
+	 * Method to get the quizzes in Database
+	 * @throws Exception 
+	 */
+	public ArrayList<QuizModel> getAllQuizzes(int userId) throws Exception {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		QuizModel quiz = null;
+		ArrayList<QuizModel> allQuizzesList = new ArrayList<QuizModel>();
+
+		try {
+			connection = (Connection) dataSource.getConnection();
+			preparedStatement = (PreparedStatement) connection.prepareStatement(QuizMeQueries.GET_ALL_QUIZZES_QUERY);
+			preparedStatement.setInt(1, userId);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				quiz = new QuizModel();
+				quiz.setQuiz_id(resultSet.getInt("QUIZ_ID"));
+				quiz.setQuizName(resultSet.getString("QUIZ_NAME"));
+				quiz.setCategotyStr(resultSet.getString("CATEGORY"));
+				quiz.setDifficultyLevelStr(resultSet.getString("DIFFICULTY"));
+				allQuizzesList.add(quiz);
+			}
+		} catch (SQLException sql) {
+			throw new Exception(sql);
+		} catch (Exception exp){
+			throw new Exception(exp);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sql) {
+					throw new Exception(sql);
+				}
+			}
+		}
+		return allQuizzesList;
+	}
 }

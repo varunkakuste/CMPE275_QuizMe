@@ -96,7 +96,7 @@ public class QuizMeController {
 				session.setAttribute("quizForm", quizModel);
 			}
 			
-			if(quizModel != null && quizModel.getQuestionsList() != null && quizModel.getQuestionsList().size() >= 3) {
+			if(quizModel != null && quizModel.getQuestionsList() != null && quizModel.getQuestionsList().size() >= 5) {
 				model.addAttribute("enableCreateQuizButton", "enable Create Quiz Button");
 			}
 			
