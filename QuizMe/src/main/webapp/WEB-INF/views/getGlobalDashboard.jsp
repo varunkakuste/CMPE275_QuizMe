@@ -15,15 +15,15 @@
     function drawSeriesChart() {
       
       var data = google.visualization.arrayToDataTable([ 
-                                        				['Quiz Name', 'Max Score', 'Quiz Count', 'User'],
+                                        				['Quiz Name', 'Quiz Count', 'Max Score', 'User'],
                                                         <c:forEach items="${globalDashBoardList}" var="entry">
-                                                            [ '${entry.quizName}', ${entry.maxScore}, ${entry.quizCount}, '${entry.userName}' ], 
+                                                            [ '${entry.quizName}', ${entry.quizCount}, ${entry.maxScore}, '${entry.userName}' ], 
                                                         </c:forEach> ['Sample', 20, 10, 'Sample User'] ]);
 
       var options = {
     	title: 'Statistics of popular quizzes and top users: ',
-    	hAxis: {title: 'Max Score'},
-        vAxis: {title: 'Quiz Count'},
+    	hAxis: {title: 'Quiz Count'},
+        vAxis: {title: 'Max Score'},
         bubble: {textStyle: {fontSize: 11}}
       };
 

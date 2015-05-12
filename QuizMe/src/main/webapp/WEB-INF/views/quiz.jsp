@@ -114,7 +114,7 @@
 														<th>Quiz Id</th>
 														<th>Quiz Name</th>
 													</tr>
-													<c:forEach items="${quizList}" var="entry">
+													<c:forEach items="${quizMap}" var="entry">
 														<tr>
 														    <td><form:radiobutton path="selectedQuizId" value="${entry.key}" /></td>
 														    <td>${entry.value}</td>

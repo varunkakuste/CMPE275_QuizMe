@@ -67,6 +67,10 @@
     
     <definition name="getGlobalDashboard" extends="base.definition"> 
        <put-attribute name="body" value="/WEB-INF/views/getGlobalDashboard.jsp" />  
+    </definition>  
+    
+    <definition name="emailForm" extends="base.definition"> 
+       <put-attribute name="body" value="/WEB-INF/views/emailForm.jsp" />  
     </definition>
     
 </tiles-definitions>  
