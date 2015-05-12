@@ -73,4 +73,8 @@
        <put-attribute name="body" value="/WEB-INF/views/emailForm.jsp" />  
     </definition>
     
+    <definition name="listAllQuizzes" extends="base.definition"> 
+       <put-attribute name="body" value="/WEB-INF/views/listAllQuizzes.jsp" />  
+    </definition>
+    
 </tiles-definitions>  

@@ -34,6 +34,13 @@
 		quizForm.action = "getQuiz";
 		quizForm.submit();
 	}
+	
+	function listOfQuiz() {
+		var quizForm = document.forms['quizForm'];
+		quizForm.method = "get";
+		quizForm.action = "getAllQuizList";
+		quizForm.submit();
+	}
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Menu</title>
@@ -46,6 +53,7 @@
 					<ul class="nav navbar-nav">
 						<li><a href="javascript: getUserDashboard();">User Dashboard</a></li>
 						<li><a href="javascript: getGlobalDashboard();">Global Dashboard</a></li>
+						<li><a href="javascript: listOfQuiz();">List of Quizzes</a></li>
 						<li><a href="javascript: createQuiz();">Create Quiz</a></li>
 						<li><a href="javascript: searchQuiz();">Search Quiz</a></li>
 					</ul>

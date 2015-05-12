@@ -373,19 +373,20 @@ public class QuizMeController {
 	/**
 	 * Method to get user's dashboard Quiz in Database
 	 */
-	@RequestMapping(value = "/getQuizList", method = RequestMethod.GET)
-	public  String getQuizList(HttpServletRequest request, Model model, @ModelAttribute("quizCreatedMessage") String infoMessage) {
+	@RequestMapping(value = "/getAllQuizList", method = RequestMethod.GET)
+	public  String getQuizList(HttpServletRequest request, Model model, @ModelAttribute("quizForm") QuizModel quizModel) {
 		int userId = 0;
 		ArrayList<QuizModel> quizList = null;
 		try {
 			session = request.getSession();
 			userId = ((Integer) session.getAttribute("userId")).intValue();
-			quizList = quizMeService.getTakenQuiz(userId);
+			quizList = quizMeService.getAllQuizzes(userId);
 			model.addAttribute("quizAllQuizzesList", quizList);
+			model.addAttribute("quizForm", quizModel);
 		} catch (Exception exception) {
 			System.out.println("Some Exception...");
 		}
-		return "takenList";
+		return "listAllQuizzes";
 	}
 	
 	
