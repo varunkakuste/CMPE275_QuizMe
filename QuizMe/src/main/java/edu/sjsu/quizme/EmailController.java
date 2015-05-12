@@ -69,13 +69,13 @@ public class EmailController {
 				
 				// sends the e-mail
 				mailSender.send(email);
-//				model.addAttribute("mailSentInfo", "email sent");
+				model.addAttribute("mailSentInfo", "email sent");
 				model.addAttribute("emailForm", new EmailModel());
 			} else {
-//				model.addAttribute("emailEmptyError", "email empty");
+				model.addAttribute("emailEmptyError", "email empty");
 			}
 		} catch(Exception expt) {
-//			model.addAttribute("mailSendError", "email sent error");
+			model.addAttribute("mailSendError", "email sent error");
 		}
 		
 		// forwards to the view named "Result"
