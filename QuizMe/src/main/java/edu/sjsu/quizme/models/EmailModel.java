@@ -14,7 +14,7 @@ import com.sun.istack.NotNull;
  */
 public class EmailModel {
 
-	@NotEmpty @NotNull
+	@NotEmpty @NotNull @Email
 	private String emailTo;
 	private String subject;
 	private String mailBody;

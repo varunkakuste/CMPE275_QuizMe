@@ -47,7 +47,7 @@ public class EmailController {
 		}
 		EmailModel email = new EmailModel();
 		email.setSubject(selectedQuizName + " Quiz refered to you by your friend");
-		email.setMailBody("Hello User, "+user.getUserName() + " wants to share our quiz with you. Click the link to take the quiz: http://localhost:8080/quizme/login");
+		email.setMailBody("Hello User, "+user.getUserName() + " wants to share our quiz with you. Click the link to take the quiz: http://quizme.elasticbeanstalk.com/login");
 		model.addAttribute("emailForm", email);
 		return "emailForm";
 	}
