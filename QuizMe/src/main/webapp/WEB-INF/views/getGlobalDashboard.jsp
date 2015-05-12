@@ -34,5 +34,34 @@
   </head>
   <body>
     <div id="series_chart_div" style="width: 900px; height: 500px;"></div>
+    
+    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+		<thead>
+			<tr style="background-color: #404040; color: #F8F8F8;">
+                <th>Quiz Name</th>
+                <th>Number of times Quiz Taken</th>
+                <th>Top User</th>
+                <th>Max Score</th>
+            </tr>
+		</thead>
+		<tbody>
+			<c:forEach items="${globalDashBoardList}" var="entry">
+				<tr>
+					<td>
+						${entry.quizName}
+					</td>
+					<td>
+						${entry.quizCount}
+					</td>
+					<td>
+						${entry.userName}
+					</td>
+					<td>
+						${entry.maxScore}
+					</td>
+				</tr>
+             </c:forEach>
+		</tbody>
+	</table>
   </body>
 </html>
