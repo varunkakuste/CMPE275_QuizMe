@@ -51,5 +51,35 @@ public class EmailController {
 		model.addAttribute("emailForm", email);
 		return "emailForm";
 	}
+	
+	@RequestMapping(value = "/sendEmail", method = RequestMethod.POST)
+	public String doSendEmail(Model model, HttpServletRequest request, @ModelAttribute("emailForm") @Valid EmailModel emailForm, BindingResult bindingResult) {
+		try {
+			if (!bindingResult.hasErrors()) {
+				// takes input from e-mail form
+				String recipientAddress = emailForm.getEmailTo(); //request.getParameter("recipient");
+				String subject = emailForm.getSubject(); //request.getParameter("subject");
+				String mailBody = emailForm.getMailBody(); //request.getParameter("message");
+				
+				// creates a simple e-mail object
+				SimpleMailMessage email = new SimpleMailMessage();
+				email.setTo(recipientAddress);
+				email.setSubject(subject);
+				email.setText(mailBody);
+				
+				// sends the e-mail
+				mailSender.send(email);
+//				model.addAttribute("mailSentInfo", "email sent");
+				model.addAttribute("emailForm", new EmailModel());
+			} else {
+//				model.addAttribute("emailEmptyError", "email empty");
+			}
+		} catch(Exception expt) {
+//			model.addAttribute("mailSendError", "email sent error");
+		}
+		
+		// forwards to the view named "Result"
+		return "emailForm";
+	}
 
 }
