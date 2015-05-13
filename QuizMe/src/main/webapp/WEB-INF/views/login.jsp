@@ -54,11 +54,13 @@
 							<tbody>
 								<tr>
 									<td>User Name: </td>
-									<td><form:input path="userName" placeholder="enter user name" /> <label style="color: red;"><form:errors path="userName" element="div" /></label></td>
+									<td><form:input path="userName" placeholder="enter user name" /></td>
+									<td><label style="color: red;"><form:errors path="userName" element="div" /></label></td>
 								</tr>
 								<tr>
 									<td>Password: </td>
-									<td><form:input path="password" type="password" placeholder="enter password" /> <label style="color: red;"><form:errors path="password" element="div" /></label></td>
+									<td><form:input path="password" type="password" placeholder="enter password" /></td>
+									<td><label style="color: red;"><form:errors path="password" element="div" /></label></td>
 								</tr>
 							</tbody>
 						</table>

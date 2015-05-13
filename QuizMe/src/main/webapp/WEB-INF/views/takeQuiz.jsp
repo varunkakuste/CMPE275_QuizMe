@@ -61,7 +61,7 @@
 											</td>
 											<td>
 <%-- 												<c:set var="questionId" value="${ questionBean.questionId }" scope="page" /> --%>
-												<input type="text" id="${questionBean.questionId}" name="${questionBean.questionId}" placeholder="enter anwser" />
+												<input type="text" id="${questionBean.questionId}" name="${questionBean.questionId}" placeholder="enter A, B, C, D" />
  											</td>
 										</tr>
 									</c:forEach>									

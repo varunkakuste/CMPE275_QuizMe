@@ -69,33 +69,37 @@
 						<table class="table table-striped table-bordered table-hover" id="dataTables-example">
 							<thead>
 			                   <tr style="background-color: #404040; color: #F8F8F8;">
-			                       <th colspan="2">Enter Details</th>
+			                       <th colspan="3">Enter Details</th>
 			                   </tr>
 							</thead>
 							<tbody>
 								<tr>
 									<td>First Name: </td>
-									<td><form:input path="firstName" placeholder="enter your first name" /></td>
+									<td colspan="2"><form:input path="firstName" placeholder="enter your first name" /></td>
 								</tr>
 								<tr>
 									<td>Last Name: </td>
-									<td><form:input path="lastName" placeholder="enter your last name" /></td>
+									<td colspan="2"><form:input path="lastName" placeholder="enter your last name" /></td>
 								</tr>
 								<tr>
 									<td>userName: </td>
-									<td><form:input path="userName" placeholder="enter user name" /> <label style="color: red;"><form:errors path="userName" element="div" /></label></td>
+									<td><form:input path="userName" placeholder="enter user name" /></td>
+									<td><label style="color: red;"><form:errors path="userName" element="div" /></label></td>
 								</tr>
 								<tr>
 									<td>Email: </td>
-									<td><form:input path="email" placeholder="enter email"/> <label style="color: red;"><form:errors path="email" element="div" /></label></td>
+									<td><form:input path="email" placeholder="enter email"/></td>
+									<td><label style="color: red;"><form:errors path="email" element="div" /></label></td>
 								</tr>
 								<tr>
 									<td>Password: </td>
-									<td><form:input path="password" type="password" placeholder="enter password"/> <label style="color: red;"><form:errors path="password" element="div" /></label></td>
+									<td><form:input path="password" type="password" placeholder="enter password"/></td>
+									<td><label style="color: red;"><form:errors path="password" element="div" /></label></td>
 								</tr>
 								<tr>
 									<td>Confirm Password: </td>
-									<td><form:input path="confirmPassword" type="password" placeholder="enter confirm password" /> <label style="color: red;"><form:errors path="confirmPassword" element="div" /></label></td>
+									<td><form:input path="confirmPassword" type="password" placeholder="enter confirm password" /></td>
+									<td><label style="color: red;"><form:errors path="confirmPassword" element="div" /></label></td>
 								</tr>
 							</tbody>
 						</table>
